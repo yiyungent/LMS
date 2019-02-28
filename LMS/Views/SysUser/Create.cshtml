@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onSubmit() {
+        // 1.提交数据
+        // 2.关闭弹窗
+    }
+    function onCancel() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+</script>
+
+<div>
+    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+</div>

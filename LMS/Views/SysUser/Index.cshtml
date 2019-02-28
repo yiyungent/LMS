@@ -1,0 +1,73 @@
+﻿@model IEnumerable<LMS.Models.SysUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<link href="~/js/layer/theme/default/layer.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onAdd() {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "新增",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '700px'],
+            content: ['/SysUser/Create', 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+</script>
+<h2 style="text-align: center;">用户列表</h2>
+
+<input type="button" value="新增" class="btn2" onclick="onAdd()" />
+<table class="dataGrid">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoginAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoginAccount)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Password)*@
+                *******
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Status)*@
+                @(item.Status == 0 ? "正常" : "禁用")
+            </td>
+            <td>
+                @Html.ActionLink("修改", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("查看", "Details", new { id = item.ID }) |
+                @Html.ActionLink("删除", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
