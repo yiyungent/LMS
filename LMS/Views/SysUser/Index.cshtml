@@ -24,6 +24,47 @@
             }
         });
     }
+    function onEdit(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "修改",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '700px'],
+            content: ['/SysUser/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onDetails(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "查看",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '700px'],
+            content: ['/SysUser/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onDelete(id) {
+        // layer 询问框
+        layer.confirm('你确定要删除吗？',{
+            btn: ['确定', '取消']
+        }, function () {
+            // 确定删除
+            layer.msg('删除了' + id, {icon: 1});
+        },function () {
+            // 取消
+        });
+    }
 </script>
 <h2 style="text-align: center;">用户列表</h2>
 
@@ -63,9 +104,9 @@
                 @(item.Status == 0 ? "正常" : "禁用")
             </td>
             <td>
-                @Html.ActionLink("修改", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("查看", "Details", new { id = item.ID }) |
-                @Html.ActionLink("删除", "Delete", new { id = item.ID })
+                <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
+                <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
+                <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />
             </td>
         </tr>
     }
