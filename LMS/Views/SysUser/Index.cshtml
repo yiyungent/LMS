@@ -17,7 +17,7 @@
             title: "新增",
             shade: 0.4,
             shadeClose: false,
-            area: ['500px', '700px'],
+            area: ['500px', '300px'],
             content: ['/SysUser/Create', 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
                 location.href = location.href; // 刷新页面
@@ -32,7 +32,7 @@
             title: "修改",
             shade: 0.4,
             shadeClose: false,
-            area: ['500px', '700px'],
+            area: ['500px', '300px'],
             content: ['/SysUser/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
                 location.href = location.href; // 刷新页面
@@ -95,7 +95,9 @@
                 @(item.Status == 0 ? "正常" : "禁用")
             </td>
             <td>
-                
+                <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
+                <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
+                <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />
             </td>
         </tr>
     }

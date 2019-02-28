@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LMS.Models.SysUser
+@{
     ViewBag.Title = "Create";
 }
 <link href="~/css/ViewPage.css" rel="stylesheet" />
@@ -16,7 +17,47 @@
     }
 </script>
 
-<div>
+<div style="text-align: center;">
     <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
     <input type="button" class="btn2" value="取消" onclick="onCancel()" />
 </div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LoginAccount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LoginAccount)
+            @Html.ValidationMessageFor(model => model.LoginAccount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+    </fieldset>
+}

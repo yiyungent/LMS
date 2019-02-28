@@ -90,9 +90,18 @@ namespace LMS.Controllers
         #endregion
 
         #region 明细
-        public ActionResult Details()
+        public ActionResult Details(int id)
         {
-            return View();
+            // 根据ID获取实体
+            SysUser entity = new SysUser()
+            {
+                ID = 2,
+                Name = "关羽",
+                LoginAccount = "gy",
+                Password = "123456",
+                Status = 0
+            };
+            return View(entity);
         }
         #endregion
 

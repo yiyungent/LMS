@@ -3,15 +3,29 @@
 @{
     ViewBag.Title = "Edit";
 }
-
-<h2>Edit</h2>
-
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onSubmit() {
+        // 1.提交数据
+        // 2.关闭弹窗
+    }
+    function onCancel() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+</script>
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+</div>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>SysUser</legend>
 
         @Html.HiddenFor(model => model.ID)
 
@@ -46,13 +60,7 @@
             @Html.EditorFor(model => model.Status)
             @Html.ValidationMessageFor(model => model.Status)
         </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
