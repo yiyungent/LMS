@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Models
+namespace Domain
 {
     /// <summary>
     /// 实体类：用户
