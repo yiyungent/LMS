@@ -24,6 +24,41 @@
             }
         });
     }
+    function onEdit(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "修改",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '700px'],
+            content: ['/SysUser/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onDetails(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "查看",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '700px'],
+            content: ['/SysUser/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onDelete(id) {
+        if (confirm('您确认要删除吗？')) {
+            // 删除
+        }
+    }
 </script>
 <h2 style="text-align: center;">用户列表</h2>
 
