@@ -23,6 +23,6 @@ namespace Domain
         /// </summary>
         [Display(Name = "状态")]
         [Property]
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }
