@@ -1,5 +1,11 @@
 ﻿@{
     ViewBag.Title = "InitDB";
 }
-
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script>
+    function onStart() {
+        window.location = "/Home/StartInitDB";
+    }
+</script>
 <h2>初始化数据库</h2>
+<input type="button" value="开始" class="btn2" onclick="onStart()" />
