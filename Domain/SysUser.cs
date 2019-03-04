@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Castle.ActiveRecord;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
@@ -9,14 +6,9 @@ namespace Domain
     /// <summary>
     /// 实体类：用户
     /// </summary>
-    public class SysUser
+    [ActiveRecord]
+    public class SysUser : BaseEntity<SysUser>
     {
-        /// <summary>
-        /// 用户编号
-        /// </summary>
-        [Display(Name = "用户编号")]
-        public int ID { get; set; }
-
         /// <summary>
         /// 用户名
         /// </summary>
