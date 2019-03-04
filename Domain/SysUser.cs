@@ -13,18 +13,21 @@ namespace Domain
         /// 用户名
         /// </summary>
         [Display(Name = "用户名")]
+        [Property]
         public string Name { get; set; }
 
         /// <summary>
         /// 登录账号
         /// </summary>
         [Display(Name = "登录账号")]
+        [Property]
         public string LoginAccount { get; set; }
 
         /// <summary>
         /// 密码
         /// </summary>
         [Display(Name = "密码")]
+        [Property]
         public string Password { get; set; }
 
         /// <summary>
@@ -33,6 +36,7 @@ namespace Domain
         ///     1: 禁用
         /// </summary>
         [Display(Name = "状态")]
+        [Property]
         public int Status { get; set; }
     }
 }
