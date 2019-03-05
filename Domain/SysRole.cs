@@ -1,4 +1,5 @@
 ﻿using Castle.ActiveRecord;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
@@ -24,5 +25,13 @@ namespace Domain
         [Display(Name = "状态")]
         [Property]
         public int Status { get; set; }
+
+        /// <summary>
+        /// 用户列表
+        ///     多对多关系
+        /// </summary>
+        [Display(Name = "用户列表")]
+        [HasAndBelongsToMany(Table = "Role_User", ColumnKey = "RoleId", ColumnRef = "UserId")]
+        public IList<SysUser> SysUserList { get; set; }
     }
 }

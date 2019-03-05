@@ -1,4 +1,5 @@
 ﻿using Castle.ActiveRecord;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
@@ -45,10 +46,20 @@ namespace Domain
         public int SortCode { get; set; }
 
         /// <summary>
-        /// 上级菜单编号
+        /// 上级菜单
+        ///     多对一关系
         /// </summary>
-        [Display(Name = "上级菜单编号")]
-        [Property]
-        public int ParentId { get; set; }
+        [Display(Name = "上级菜单")]
+        [BelongsTo(Column = "ParentId")]
+        public SysMenu ParentMenu { get; set; }
+
+
+        /// <summary>
+        /// 子菜单列表
+        ///     一对多关系
+        /// </summary>
+        [Display(Name = "子菜单列表")]
+        [HasMany(ColumnKey = "ParentId")]
+        public IList<SysMenu> Children { get; set; }
     }
 }
