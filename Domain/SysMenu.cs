@@ -13,28 +13,28 @@ namespace Domain
         /// 名称
         /// </summary>
         [Display(Name = "名称")]
-        [Property]
+        [Property(Length = 100, NotNull = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// 类名
         /// </summary>
         [Display(Name = "类名")]
-        [Property]
+        [Property(Length = 100)]
         public string ClassName { get; set; }
 
         /// <summary>
         /// 控制器
         /// </summary>
         [Display(Name = "控制器")]
-        [Property]
+        [Property(Length = 100)]
         public string ControllerName { get; set; }
 
         /// <summary>
         /// 动作
         /// </summary>
         [Display(Name = "动作")]
-        [Property]
+        [Property(Length = 100)]
         public string ActionName { get; set; }
 
         /// <summary>

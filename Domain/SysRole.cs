@@ -13,7 +13,7 @@ namespace Domain
         /// 角色名
         /// </summary>
         [Display(Name = "角色名")]
-        [Property]
+        [Property(Length = 30, NotNull = true)]
         public string Name { get; set; }
 
         /// <summary>
