@@ -53,7 +53,6 @@ namespace Domain
         [BelongsTo(Column = "ParentId")]
         public SysMenu ParentMenu { get; set; }
 
-
         /// <summary>
         /// 子菜单列表
         ///     一对多关系
