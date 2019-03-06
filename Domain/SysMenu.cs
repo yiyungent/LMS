@@ -60,5 +60,13 @@ namespace Domain
         [Display(Name = "子菜单列表")]
         [HasMany(ColumnKey = "ParentId")]
         public IList<SysMenu> Children { get; set; }
+
+        /// <summary>
+        /// 操作列表
+        ///     一对多关系
+        /// </summary>
+        [Display(Name = "操作列表")]
+        [HasMany(ColumnKey = "MenuId")]
+        public IList<SysFunction> SysFunctionList { get; set; }
     }
 }
