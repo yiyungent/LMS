@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Domain;
 
 namespace Manager
 {
-    public class SysUserManager
+    public class SysUserManager : BaseManager<SysUser>
     {
     }
 }
