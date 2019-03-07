@@ -1,9 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <components>
-    <!--<component id="SysUserService"
+    <component id="SysUserService"
                service="Service.SysUserService"
                type="Component.SysUserComponent"
-               isTransactional="true" />-->
+               isTransactional="true" />
+    <component id="SysRoleService"
+               service="Service.SysRoleService"
+               type="Component.SysRoleComponent"
+               isTransactional="true" />
+    <component id="SysMenuService"
+               service="Service.SysMenuService"
+               type="Component.SysMenuComponent"
+               isTransactional="true" />
+    <component id="SysFunctionService"
+               service="Service.SysFunctionService"
+               type="Component.SysFunctionComponent"
+               isTransactional="true" />
+    <component id="StudentService"
+               service="Service.StudentService"
+               type="Component.StudentComponent"
+               isTransactional="true" />
+    <component id="ClazzService"
+               service="Service.ClazzService"
+               type="Component.ClazzComponent"
+               isTransactional="true" />
   </components>
 </configuration>

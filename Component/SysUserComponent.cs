@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Domain;
+using Manager;
+using Service;
+
 
 namespace Component
 {
-    public class SysUserComponent
+    public class SysUserComponent : BaseComponent<SysUser, SysUserManager>, SysUserService
     {
     }
 }

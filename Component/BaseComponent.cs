@@ -20,7 +20,7 @@ namespace Component
         /// <summary>
         /// 新增实体
         /// </summary>
-        public new void Create(T t)
+        public void Create(T t)
         {
             manager.Create(t);
         }
@@ -28,7 +28,7 @@ namespace Component
         /// <summary>
         /// 根据实体删除
         /// </summary>
-        public new void Delete(T t)
+        public void Delete(T t)
         {
             manager.Delete(t);
         }
