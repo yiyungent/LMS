@@ -2,28 +2,28 @@
 <configuration>
   <components>
     <component id="SysUserService"
-               service="Service.SysUserService"
-               type="Component.SysUserComponent"
+               service="Service.SysUserService,Service"
+               type="Component.SysUserComponent,Component"
                isTransactional="true" />
     <component id="SysRoleService"
-               service="Service.SysRoleService"
-               type="Component.SysRoleComponent"
+               service="Service.SysRoleService,Service"
+               type="Component.SysRoleComponent,Component"
                isTransactional="true" />
     <component id="SysMenuService"
-               service="Service.SysMenuService"
-               type="Component.SysMenuComponent"
+               service="Service.SysMenuService,Service"
+               type="Component.SysMenuComponent,Component"
                isTransactional="true" />
     <component id="SysFunctionService"
-               service="Service.SysFunctionService"
-               type="Component.SysFunctionComponent"
+               service="Service.SysFunctionService,Service"
+               type="Component.SysFunctionComponent,Component"
                isTransactional="true" />
     <component id="StudentService"
-               service="Service.StudentService"
-               type="Component.StudentComponent"
+               service="Service.StudentService,Service"
+               type="Component.StudentComponent,Component"
                isTransactional="true" />
     <component id="ClazzService"
-               service="Service.ClazzService"
-               type="Component.ClazzComponent"
+               service="Service.ClazzService,Service"
+               type="Component.ClazzComponent,Component"
                isTransactional="true" />
   </components>
 </configuration>

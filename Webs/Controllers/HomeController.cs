@@ -78,7 +78,7 @@ namespace Webs.Controllers
 
                 Response.Write(".........初始化用户ok<br/>");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Response.Write(".........初始化用户Error<br/>");
             }
