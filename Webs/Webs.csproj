@@ -166,11 +166,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckBoxListHelper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SysUserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadioButtonListHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -181,6 +184,17 @@
     </Content>
     <Content Include="css\ViewPage.css" />
     <Content Include="Global.asax" />
+    <Content Include="js\jquery-1.9.1.min.js" />
+    <Content Include="js\jquery-migrate-1.1.1.js" />
+    <Content Include="js\layer\layer.js" />
+    <Content Include="js\layer\mobile\layer.js" />
+    <Content Include="js\layer\mobile\need\layer.css" />
+    <Content Include="js\layer\theme\default\icon-ext.png" />
+    <Content Include="js\layer\theme\default\icon.png" />
+    <Content Include="js\layer\theme\default\layer.css" />
+    <Content Include="js\layer\theme\default\loading-0.gif" />
+    <Content Include="js\layer\theme\default\loading-1.gif" />
+    <Content Include="js\layer\theme\default\loading-2.gif" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -198,6 +212,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Comm\Comm.csproj">
+      <Project>{cb65d47c-25a7-4030-af9b-66ef31713a76}</Project>
+      <Name>Comm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Component\Component.csproj">
       <Project>{6d318c1d-8250-4453-aec3-029b5187757f}</Project>
       <Name>Component</Name>
@@ -217,6 +235,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\InitDB.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysUser\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysUser\Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

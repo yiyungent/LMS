@@ -8,6 +8,7 @@ using Castle.ActiveRecord;
 using Domain;
 using Service;
 using Core;
+using Comm;
 
 namespace Webs.Controllers
 {
@@ -38,6 +39,7 @@ namespace Webs.Controllers
             InitUser();
             InitClazz();
             InitStudent();
+
         }
 
         #region 初始化学生
@@ -47,12 +49,16 @@ namespace Webs.Controllers
             int[] sexs = { 0, 1, 0 };
             for (int i = 0; i < names.Length; i++)
             {
-                Clazz clazz = Container.Instance.Resolve<ClazzService>().GetEntity(i + 1);
+                Clazz clazz = Container.Instance.Resolve<ClazzService>().GetEntity(1);
+
+                // 左补0
+                string str = (i < 9) ? "0" + (i + 1) : (i + 1).ToString();
 
                 Container.Instance.Resolve<StudentService>().Create(new Student()
                 {
                     Name = names[i],
                     Sex = sexs[i],
+
                     #region 左补0其它方法
                     // 左补0, 这里最终2位
                     // 1.
@@ -61,32 +67,26 @@ namespace Webs.Controllers
                     //StudyNumber = "1700103" + string.Format("{0:d2}", i),
                     // 3.
                     //StudyNumber = "1700103" + i.ToString("00"), 
-                    #endregion
                     // 4.
-                    StudyNumber = "1700103" + i.ToString("D2"),
+                    //StudyNumber = "1700103" + i.ToString("D2"),
+                    #endregion
 
+                    StudyNumber = str,
                     Mobile = "15098443993",
                     Clazz = clazz
                 });
             }
-        } 
+        }
         #endregion
 
         #region 初始化班级
         private void InitClazz()
         {
-            string[] names = { };
-
-            for (int i = 0; i < names.Length; i++)
+            Container.Instance.Resolve<ClazzService>().Create(new Clazz()
             {
-                IList<Student> studentList = Container.Instance.Resolve<StudentService>().GetAll().Where(s => s.Clazz.ID == i + 1).ToList();
-                Container.Instance.Resolve<ClazzService>().Create(new Clazz()
-                {
-                    Name = names[i],
-                    StudentList = studentList
-                });
-            }
-        } 
+                Name = "1700103班",
+            });
+        }
         #endregion
 
         #region 初始化用户
@@ -115,7 +115,7 @@ namespace Webs.Controllers
                 {
                     Name = "系统管理员",
                     LoginAccount = "admin",
-                    Password = "123456",
+                    Password = StringHelper.EncodeMD5("123456"),
                     Status = 0
                 });
 
@@ -123,7 +123,7 @@ namespace Webs.Controllers
                 {
                     Name = "莫宇",
                     LoginAccount = "my",
-                    Password = "123456",
+                    Password = StringHelper.EncodeMD5("123456"),
                     Status = 0
                 });
 
