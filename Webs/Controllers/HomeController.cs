@@ -39,7 +39,7 @@ namespace Webs.Controllers
             InitUser();
             InitClazz();
             InitStudent();
-
+            InitRole();
         }
 
         #region 初始化学生
@@ -132,6 +132,49 @@ namespace Webs.Controllers
             catch (Exception ex)
             {
                 Response.Write(".........初始化用户Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化角色
+        private void InitRole()
+        {
+            try
+            {
+                Response.Write(".........初始化角色<br/>");
+
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
+                    Name = "系统管理员",
+                    Status = 0
+                });
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
+                    Name = "接单员",
+                    Status = 0
+                });
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
+                    Name = "调度员",
+                    Status = 0
+                });
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
+                    Name = "财务员",
+                    Status = 0
+                });
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
+                    Name = "驾驶员",
+                    Status = 0
+                });
+
+
+                Response.Write(".........初始化角色ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化角色Error<br/>");
             }
         }
         #endregion

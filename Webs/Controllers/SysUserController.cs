@@ -7,6 +7,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using NHibernate.Criterion;
+using Comm;
+
 namespace Webs.Controllers
 {
     public class SysUserController : Controller
@@ -29,8 +32,30 @@ namespace Webs.Controllers
             SysUser mo = new SysUser();
             // 2.返回前预处理
             ViewBag.rblStatus = InitRBLForStatus(0);
+            ViewBag.cblRole = InitCBLForRole(new List<int>());
             // 3.返回视图
             return View(mo);
+        }
+
+        [HttpPost]
+        public string Create(SysUser mo)
+        {
+            try
+            {
+                if (Request["cblRole"].Length > 0)
+                {
+                    IList<int> idRange = StringHelper.ConvertIdRange(Request["cblRole"]);
+
+                    mo.SysRoleList = Container.Instance.Resolve<SysRoleService>().Query(new List<ICriterion>() { Expression.In("ID", idRange.ToArray()) });
+
+                }
+                Container.Instance.Resolve<SysUserService>().Create(mo);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
         #endregion
 
@@ -53,6 +78,25 @@ namespace Webs.Controllers
                 Value = "1",
                 Selected = (selectedValue == 1),
             });
+
+            return ret;
+        }
+        /// <summary>
+        /// 初始化多选备选项-角色
+        /// </summary>
+        private IList<SelectListItem> InitCBLForRole(List<int> selectedValue)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            IList<SysRole> all = Container.Instance.Resolve<SysRoleService>().GetAll();
+            foreach (var item in all)
+            {
+                ret.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = selectedValue.Contains(item.ID)
+                });
+            }
 
             return ret;
         }

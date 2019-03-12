@@ -26,5 +26,24 @@ namespace Comm
             }
             return ret;
         }
+
+        /// <summary>
+        /// 将ID字符串转换为 List
+        /// </summary>
+        public static IList<int> ConvertIdRange(string crude)
+        {
+            IList<int> rtn = new List<int>();
+            string[] arr = crude.Split(',');
+            for (int i = 0; i < arr.Length; i++)
+            {
+                try
+                {
+                    rtn.Add(int.Parse(arr[i]));
+                }
+                catch
+                { }
+            }
+            return rtn;
+        }
     }
 }
