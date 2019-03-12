@@ -42,6 +42,8 @@ namespace Webs.Controllers
         {
             try
             {
+                // 1.提交前预处理
+                // 1.1角色
                 if (Request["cblRole"].Length > 0)
                 {
                     IList<int> idRange = StringHelper.ConvertIdRange(Request["cblRole"]);
@@ -49,11 +51,66 @@ namespace Webs.Controllers
                     mo.SysRoleList = Container.Instance.Resolve<SysRoleService>().Query(new List<ICriterion>() { Expression.In("ID", idRange.ToArray()) });
 
                 }
+                // 1.2密码
+                mo.Password = StringHelper.EncodeMD5(mo.Password);
+                // 2.提交数据库
                 Container.Instance.Resolve<SysUserService>().Create(mo);
+
+                // 3.保存成功返回
                 return "ok";
             }
             catch (Exception ex)
             {
+                // 4.保存失败返回异常
+                return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 修改
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            // 1.准备实体
+            SysUser mo = Container.Instance.Resolve<SysUserService>().GetEntity(id);
+            // 2.返回前预处理
+            ViewBag.rblStatus = InitRBLForStatus(mo.Status);
+            var idRange = from m in mo.SysRoleList
+                          select m.ID;
+            ViewBag.cblRole = InitCBLForRole(idRange.ToList());
+            // 3.返回视图
+            return View(mo);
+        }
+
+        [HttpPost]
+        public string Edit(SysUser mo)
+        {
+            try
+            {
+                // 1.提交前预处理
+                SysUser dbmo = Container.Instance.Resolve<SysUserService>().GetEntity(mo.ID);
+                // 1.1角色
+                if (Request["cblRole"].Length > 0)
+                {
+                    IList<int> idRange = StringHelper.ConvertIdRange(Request["cblRole"]);
+
+                    mo.SysRoleList = Container.Instance.Resolve<SysRoleService>().Query(new List<ICriterion>() { Expression.In("ID", idRange.ToArray()) });
+
+                }
+                // 设置修改后的值
+                dbmo.Name = mo.Name;
+                dbmo.LoginAccount = mo.LoginAccount;
+                dbmo.Status = mo.Status;
+                dbmo.SysRoleList = mo.SysRoleList;
+                // 2.提交数据库
+                Container.Instance.Resolve<SysUserService>().Edit(dbmo);
+
+                // 3.保存成功返回
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                // 4.保存失败返回异常
                 return ex.Message;
             }
         }

@@ -14,6 +14,10 @@ namespace Comm
         /// </summary>
         public static string EncodeMD5(string crude)
         {
+            if (crude == null)
+            {
+                return string.Empty;
+            }
             // 实例化MD5构造器
             MD5 md5 = MD5.Create();
             // MD5加密

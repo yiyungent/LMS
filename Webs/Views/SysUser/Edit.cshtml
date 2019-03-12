@@ -1,0 +1,115 @@
+﻿@model Domain.SysUser
+@{
+    ViewBag.Title = "Create";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onSubmit() {
+        // 1.验证输入
+        // 1.1 用户名
+        if ($("#Name").val().trim() == "") {
+            alert("请输入用户名");
+            $("#Name").focus();
+            return;
+        }
+        if (getByteLen($("#Name").val().trim()) > 30) {
+            alert("用户名不能超过30个字符");
+            $("#Name").focus();
+            return;
+        }
+        // 1.2 登录账号
+        if ($("#LoginAccount").val().trim() == "") {
+            alert("请输入登录账号名");
+            $("#LoginAccount").focus();
+            return;
+        }
+        if (getByteLen($("#LoginAccount").val().trim()) > 30) {
+            alert("登录账号名不能超过30个字符");
+            $("#LoginAccount").focus();
+            return;
+        }
+        // 2.提交数据
+        $.ajax({
+            type: "post",
+            url: "/SysUser/Edit",
+            data: $("form").serialize(),
+            dataType: "text",
+            success: function (rdata) {
+                if (rdata == "ok") {
+                    // 提交成功
+                    // 3.关闭弹窗
+                    parent.layer.close(parent.layer.index);
+                } else {
+                    // 提交失败
+                    //alert(rdata);
+                    layer.message(rdata);
+                }
+            }
+        });
+        // 3.关闭弹窗
+    }
+    function onCancel() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+
+    // 求字符串长度——汉字算2
+    function getByteLen(val) {
+        var len = 0;
+        for (var i = 0; i < val.length; i++) {
+            var a = val.charAt(i);
+            if (a.match(/[^\x00-\xff]/ig) != null) {
+                len += 2;
+            } else {
+                len += 1;
+            }
+        }
+        return len;
+    }
+</script>
+
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.ID)
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LoginAccount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LoginAccount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.RadioButtonList("Status", (IList<SelectListItem>)ViewBag.rblStatus)
+        </div>
+
+        <div class="editor-label">
+            担任角色
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxList("cblRole", (IList<SelectListItem>)ViewBag.cblRole)
+        </div>
+    </fieldset>
+}

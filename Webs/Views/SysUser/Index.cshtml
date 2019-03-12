@@ -74,7 +74,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.SysRoleList)
+        </th>
+        <th>操作</th>
     </tr>
 
     @foreach (var item in Model)
@@ -93,6 +96,45 @@
             <td>
                 @*@Html.DisplayFor(modelItem => item.Status)*@
                 @(item.Status == 0 ? "正常" : "禁用")
+            </td>
+            <td>
+                @* 方法一 *@
+                @*@{
+                    string names = string.Empty;
+                    if (item.SysRoleList != null && item.SysRoleList.Count > 0)
+                    { 
+                        int i = 0;
+                        foreach (var role in item.SysRoleList)
+                        {
+                            i = i + 1;
+                            //if (i == item.SysRoleList.Count)
+                            //{ 
+                            //    names = names + role.Name;
+                            //}
+                            //else
+                            //{
+                            //    names = names + role.Name + "|";
+                            //}
+                            string sep = (i == item.SysRoleList.Count) ? "" : "|";
+                            names = names + role.Name + sep;
+                        }
+                    }
+                }*@
+                @* 方法二 *@
+                @*@{
+                    string names = string.Empty;
+                    if (item.SysRoleList != null && item.SysRoleList.Count > 0)
+                    { 
+                        foreach (var role in item.SysRoleList)
+                        {
+                            names = names + role.Name + "|";
+                        }
+                        names = names.Substring(0, names.Length - 1);
+                    }
+                }*@
+
+                @* 方法三 *@
+                @string.Join(",", from m in item.SysRoleList select m.Name)
             </td>
             <td>
                 <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
