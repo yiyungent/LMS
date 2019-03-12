@@ -51,9 +51,48 @@
             content: ['/SysUser/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
         });
     }
+    function onReset(id) {
+        if (confirm('您确认要删除吗？')) {
+            // 删除
+            $.ajax({
+                type: "post",
+                url: "/SysUser/Reset",
+                data: { id: id },
+                dataType: "text",
+                success: function (rdata) {
+                    if (rdata == "ok") {
+                        // 提交成功
+                        // 刷新列表
+                        location.href = location.href;
+                    } else {
+                        // 提交失败
+                        //alert(rdata);
+                        layer.message(rdata);
+                    }
+                }
+            });
+        }
+    }
     function onDelete(id) {
         if (confirm('您确认要删除吗？')) {
             // 删除
+            $.ajax({
+                type: "post",
+                url: "/SysUser/Delete",
+                data: { id: id },
+                dataType: "text",
+                success: function (rdata) {
+                    if (rdata == "ok") {
+                        // 提交成功
+                        // 刷新列表
+                        location.href = location.href;
+                    } else {
+                        // 提交失败
+                        //alert(rdata);
+                        layer.message(rdata);
+                    }
+                }
+            });
         }
     }
 </script>
@@ -137,6 +176,7 @@
                 @string.Join(",", from m in item.SysRoleList select m.Name)
             </td>
             <td>
+                <input type="button" value="重置" class="btn2" onclick="onReset(@item.ID)" />
                 <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
                 <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
                 <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />
