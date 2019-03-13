@@ -31,8 +31,8 @@
                 elem: 'js-page-bar'
                 , count: @ViewBag.TotalCount
                 , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: @(Request["pageIndex"] ?? "1")
-                , limit: @(Request["pageSize"] ?? "10")
+                , curr: @ViewBag.PageIndex
+                , limit: @ViewBag.PageSize
                 , jump: function (obj, isFirstLoad) {
                     console.log(obj, isFirstLoad);
                     if (!isFirstLoad) {

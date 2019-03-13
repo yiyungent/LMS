@@ -17,6 +17,8 @@ namespace Webs.Controllers
         {
             IList<Student> list = Container.Instance.Resolve<StudentService>().GetAll();
             ViewBag.TotalCount = list.Count;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.PageSize = pageSize;
 
             var data = (from m in list
                         orderby m.ID ascending
