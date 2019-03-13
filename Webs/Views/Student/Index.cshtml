@@ -15,18 +15,21 @@
     <link href="~/dist/loader.css" rel="stylesheet" />
 </head>
 <body>
+    <h2 style="text-align: center;">@ViewBag.Title</h2>
     <p>
-        @Html.ActionLink("新增", "Create", null, new { @class = "layui-btn layui-btn-sm" })
+        <button class="layui-btn layui-btn-sm" onclick="onAdd()">新增</button>
     </p>
     @Html.Partial("StudentTable", Model)
     <div id="js-page-bar"></div>
     <div id="js-loading" class="loader" style="display: none;">Loading...</div>
     <script src="~/dist/layui/layui.js"></script>
     <script src="~/js/jquery-1.9.1.min.js"></script>
+    <script src="~/js/jquery-migrate-1.1.1.js"></script>
     <script src="~/dist/pjax/jquery.pjax.js"></script>
     <script>
+        // start 分页
         layui.use(['laypage', 'layer'], function () {
-            var laypage = layui.laypage
+            laypage = layui.laypage
             , layer = layui.layer;
             laypage.render({
                 elem: 'js-page-bar'
@@ -42,7 +45,7 @@
                 }
             });
         });
-
+        
         function pageGo(pageIndex, pageSize) {
             if ($.support.pjax) {
                 $.pjax({
@@ -60,6 +63,92 @@
         $(document).on('pjax:complete', function () {
             $('#js-loading').hide("slow");
         });
+        // end 分页
+
+        // start 操作
+        function onAdd() {
+            layer.open({
+                type: 2,
+                closeBtn: 1,
+                anim: 4,
+                title: "新增",
+                shade: 0.4,
+                shadeClose: false,
+                area: ['500px', '440px'],
+                content: ['/Student/Create', 'yes'],
+                end: function () {
+                    location.href = location.href; // 刷新页面
+                }
+            });
+        }
+        function onEdit(id) {
+            layer.open({
+                type: 2,
+                closeBtn: 1,
+                anim: 4,
+                title: "修改",
+                shade: 0.4,
+                shadeClose: false,
+                area: ['500px', '300px'],
+                content: ['/Student/Edit?id=' + id, 'yes'],
+                end: function () {
+                    location.href = location.href; // 刷新页面
+                }
+            });
+        }
+        function onDetails(id) {
+            layer.open({
+                type: 2,
+                closeBtn: 1,
+                anim: 4,
+                title: "查看",
+                shade: 0.4,
+                shadeClose: false,
+                area: ['500px', '300px'],
+                content: ['/Student/Details?id=' + id, 'yes'],
+            });
+        }
+        function onReset(id) {
+            if (confirm('您确认要重置吗？')) {
+                // 重置
+                $.ajax({
+                    type: "post",
+                    url: "/Student/Reset",
+                    data: { id: id },
+                    dataType: "text",
+                    success: function (rdata) {
+                        if (rdata == "ok") {
+                            // 提交成功
+                            // 刷新列表
+                            location.href = location.href;
+                        } else {
+                            layer.message(rdata);
+                        }
+                    }
+                });
+            }
+        }
+        function onDelete(id) {
+            if (confirm('您确认要删除吗？')) {
+                // 删除
+                $.ajax({
+                    type: "post",
+                    url: "/Student/Delete",
+                    data: { id: id },
+                    dataType: "text",
+                    success: function (rdata) {
+                        if (rdata == "ok") {
+                            // 提交成功
+                            // 刷新列表
+                            location.href = location.href;
+                        } else {
+                            layer.message(rdata);
+                        }
+                    }
+                });
+            }
+        }
+        // end 操作
     </script>
 </body>
 </html>
