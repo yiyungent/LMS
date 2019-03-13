@@ -51,7 +51,7 @@ namespace Webs.Controllers
                 Container.Instance.Resolve<StudentService>().Create(new Student
                 {
                     Name = "学生" + i,
-                    Sex = (int)i % 2,
+                    Sex = i % 2,
                     Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(1),
                     StudyNumber = "1700103" + i.ToString("000"),
                     Mobile = "11320" + i.ToString("000000")

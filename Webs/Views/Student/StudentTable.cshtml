@@ -31,7 +31,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Sex)
+                    @(item.Sex == 0 ? "男": "女")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StudyNumber)
