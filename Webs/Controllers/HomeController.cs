@@ -119,14 +119,24 @@ namespace Webs.Controllers
                     Status = 0
                 });
 
-                Container.Instance.Resolve<SysUserService>().Create(new SysUser()
-                {
-                    Name = "莫宇",
-                    LoginAccount = "my",
-                    Password = StringHelper.EncodeMD5("123456"),
-                    Status = 0
-                });
+                //Container.Instance.Resolve<SysUserService>().Create(new SysUser()
+                //{
+                //    Name = "莫宇",
+                //    LoginAccount = "my",
+                //    Password = StringHelper.EncodeMD5("123456"),
+                //    Status = 0
+                //});
 
+                for (int i = 0; i < 100; i++)
+                {
+                    Container.Instance.Resolve<SysUserService>().Create(new SysUser()
+                    {
+                        Name = "用户" + i,
+                        LoginAccount = "user" + i,
+                        Password = StringHelper.EncodeMD5("123456"),
+                        Status = 0
+                    });
+                }
                 Response.Write(".........初始化用户ok<br/>");
             }
             catch (Exception ex)

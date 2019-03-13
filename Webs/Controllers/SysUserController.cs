@@ -6,21 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
 using NHibernate.Criterion;
 using Comm;
+using PagedList;
 
 namespace Webs.Controllers
 {
     public class SysUserController : Controller
     {
         #region 列表
-        public ActionResult Index()
+        public ActionResult Index(int pageIndex = 1)
         {
             IList<SysUser> lst = Container.Instance.Resolve<SysUserService>().GetAll();
 
 
-            return View(lst); // 强类型视图
+            return View(lst.ToPagedList(pageIndex, 10)); // 强类型视图
         }
         #endregion
 
@@ -128,6 +128,39 @@ namespace Webs.Controllers
             {
                 return ex.Message;
             }
+        }
+        #endregion
+
+        #region 重置密码
+        public string Reset(int id)
+        {
+            try
+            {
+                // 1.获取实体
+                SysUser mo = Container.Instance.Resolve<SysUserService>().GetEntity(id);
+                // 2.设置缺省密码
+                // defaultPassword
+                string defaultPassword = System.Configuration.ConfigurationManager.AppSettings["defaultPassword"];
+                mo.Password = StringHelper.EncodeMD5(defaultPassword);
+                // 3.重置密码
+                Container.Instance.Resolve<SysUserService>().Edit(mo);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 查看明细
+        public ActionResult Details(int id)
+        {
+            // 1.准备实体
+            SysUser mo = Container.Instance.Resolve<SysUserService>().GetEntity(id);
+            // 2.返回视图前预处理
+            // 3.返回视图
+            return View(mo);
         }
         #endregion
 

@@ -1,8 +1,10 @@
-﻿@model IEnumerable<Domain.SysUser>
+﻿@using PagedList.Mvc
+@model PagedList.PagedList<Domain.SysUser>
 
 @{
     ViewBag.Title = "Index";
 }
+<link href="~/css/PagedList.css" rel="stylesheet" />
 <link href="~/css/ViewPage.css" rel="stylesheet" />
 <link href="~/js/layer/theme/default/layer.css" rel="stylesheet" />
 <script src="~/js/jquery-1.9.1.min.js"></script>
@@ -47,13 +49,13 @@
             title: "查看",
             shade: 0.4,
             shadeClose: false,
-            area: ['500px', '700px'],
+            area: ['500px', '300px'],
             content: ['/SysUser/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
         });
     }
     function onReset(id) {
-        if (confirm('您确认要删除吗？')) {
-            // 删除
+        if (confirm('您确认要重置吗？')) {
+            // 重置
             $.ajax({
                 type: "post",
                 url: "/SysUser/Reset",
@@ -102,19 +104,19 @@
 <table class="dataGrid">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            用户名
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LoginAccount)
+            登录账号
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Password)
+            密码
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            状态
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SysRoleList)
+            担任角色列表
         </th>
         <th>操作</th>
     </tr>
@@ -185,3 +187,4 @@
     }
 
 </table>
+@Html.PagedListPager(Model, pageIndex => Url.Action("Index", new { pageIndex }))
