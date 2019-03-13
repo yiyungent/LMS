@@ -1,0 +1,52 @@
+﻿@model Domain.SysUser
+
+@{
+    ViewBag.Title = "Details";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script>
+    function onClose() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+</script>
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="返回" onclick="onClose()" />
+</div>
+<fieldset>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LoginAccount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LoginAccount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Password)
+    </div>
+    <div class="display-field">
+        ******
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Status)
+    </div>
+    <div class="display-field">
+        @(Model.Status == 0 ? "正常" : "禁用")
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysRoleList)
+    </div>
+    <div class="display-field">
+        @string.Join("|", from m in Model.SysRoleList select m.Name)
+    </div>
+</fieldset>
+
