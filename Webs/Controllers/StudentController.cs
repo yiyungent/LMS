@@ -84,6 +84,33 @@ namespace Webs.Controllers
         }
         #endregion
 
+        #region 删除
+        public string Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<StudentService>().Delete(id);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 查看明细
+        public ActionResult Details(int id)
+        {
+            // 1.准备实体
+            Student mo = Container.Instance.Resolve<StudentService>().GetEntity(id);
+            // 2.返回视图前预处理
+
+            // 3.返回视图
+            return View(mo);
+        }
+        #endregion
+
         #region 辅助方法
         /// <summary>
         /// 初始化单选备选项-性别

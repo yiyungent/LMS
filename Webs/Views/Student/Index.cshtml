@@ -89,7 +89,7 @@
                 title: "修改",
                 shade: 0.4,
                 shadeClose: false,
-                area: ['500px', '300px'],
+                area: ['500px', '440px'],
                 content: ['/Student/Edit?id=' + id, 'yes'],
                 end: function () {
                     location.href = location.href; // 刷新页面
@@ -104,29 +104,9 @@
                 title: "查看",
                 shade: 0.4,
                 shadeClose: false,
-                area: ['500px', '300px'],
+                area: ['500px', '440px'],
                 content: ['/Student/Details?id=' + id, 'yes'],
             });
-        }
-        function onReset(id) {
-            if (confirm('您确认要重置吗？')) {
-                // 重置
-                $.ajax({
-                    type: "post",
-                    url: "/Student/Reset",
-                    data: { id: id },
-                    dataType: "text",
-                    success: function (rdata) {
-                        if (rdata == "ok") {
-                            // 提交成功
-                            // 刷新列表
-                            location.href = location.href;
-                        } else {
-                            layer.message(rdata);
-                        }
-                    }
-                });
-            }
         }
         function onDelete(id) {
             if (confirm('您确认要删除吗？')) {
