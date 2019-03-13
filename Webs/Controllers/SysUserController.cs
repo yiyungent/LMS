@@ -44,7 +44,7 @@ namespace Webs.Controllers
             {
                 // 1.提交前预处理
                 // 1.1角色
-                if (Request["cblRole"].Length > 0)
+                if (Request["cblRole"] != null && Request["cblRole"].Length > 0)
                 {
                     IList<int> idRange = StringHelper.ConvertIdRange(Request["cblRole"]);
 
@@ -90,12 +90,11 @@ namespace Webs.Controllers
                 // 1.提交前预处理
                 SysUser dbmo = Container.Instance.Resolve<SysUserService>().GetEntity(mo.ID);
                 // 1.1角色
-                if (Request["cblRole"].Length > 0)
+                if (Request["cblRole"] != null && Request["cblRole"].Length > 0)
                 {
                     IList<int> idRange = StringHelper.ConvertIdRange(Request["cblRole"]);
 
                     mo.SysRoleList = Container.Instance.Resolve<SysRoleService>().Query(new List<ICriterion>() { Expression.In("ID", idRange.ToArray()) });
-
                 }
                 // 设置修改后的值
                 dbmo.Name = mo.Name;

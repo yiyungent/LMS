@@ -45,6 +45,19 @@ namespace Webs.Controllers
         #region 初始化学生
         private void InitStudent()
         {
+
+            for (int i = 0; i < 100; i++)
+            {
+                Container.Instance.Resolve<StudentService>().Create(new Student
+                {
+                    Name = "学生" + i,
+                    Sex = (int)i % 2,
+                    Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(1),
+                    StudyNumber = "1700103" + i.ToString("000"),
+                    Mobile = "11320" + i.ToString("000000")
+                });
+            }
+
             string[] names = { "张三", "李四", "王五" };
             int[] sexs = { 0, 1, 0 };
             for (int i = 0; i < names.Length; i++)
@@ -119,13 +132,13 @@ namespace Webs.Controllers
                     Status = 0
                 });
 
-                //Container.Instance.Resolve<SysUserService>().Create(new SysUser()
-                //{
-                //    Name = "莫宇",
-                //    LoginAccount = "my",
-                //    Password = StringHelper.EncodeMD5("123456"),
-                //    Status = 0
-                //});
+                Container.Instance.Resolve<SysUserService>().Create(new SysUser()
+                {
+                    Name = "莫宇",
+                    LoginAccount = "my",
+                    Password = StringHelper.EncodeMD5("123456"),
+                    Status = 0
+                });
 
                 for (int i = 0; i < 100; i++)
                 {

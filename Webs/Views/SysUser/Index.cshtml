@@ -187,4 +187,13 @@
     }
 
 </table>
-@Html.PagedListPager(Model, pageIndex => Url.Action("Index", new { pageIndex }))
+@Html.PagedListPager(Model, pageIndex => Url.Action("Index", new { pageIndex }), new PagedListRenderOptions
+{
+    LinkToFirstPageFormat = "首页",
+    LinkToLastPageFormat = "末页",
+    LinkToPreviousPageFormat = "上一页",
+    LinkToNextPageFormat = "下一页",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayItemSliceAndTotal = true,
+    ItemSliceAndTotalFormat = "第{0}到{1}行, 共{2}行"
+})

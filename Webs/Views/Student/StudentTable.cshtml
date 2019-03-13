@@ -1,0 +1,54 @@
+﻿@model List<Domain.Student>
+
+@{
+    Layout = null;
+}
+
+<table id="js-pjax-container" class="layui-table" lay-size="sm">
+    <colgroup>
+        <col width="10">
+        <col width="10">
+        <col width="10">
+        <col width="10">
+        <col width="10">
+        <col width="100">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>学号</th>
+            <th>手机号</th>
+            <th>班级</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sex)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudyNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Clazz.Name)
+                </td>
+                <td>
+                    <button class="layui-btn layui-btn-sm" onclick="onReset(@item.ID)">重置</button>
+                    <button class="layui-btn layui-btn-sm" onclick="onEdit(@item.ID)">修改</button>
+                    <button class="layui-btn layui-btn-sm" onclick="onDetails(@item.ID)">查看</button>
+                    <button class="layui-btn layui-btn-sm" onclick="onDelete(@item.ID)">修改</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

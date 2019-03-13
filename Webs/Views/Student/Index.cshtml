@@ -1,0 +1,64 @@
+﻿@model List<Domain.Student>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/dist/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/dist/loader.css" rel="stylesheet" />
+</head>
+<body>
+    <p>
+        @Html.ActionLink("新增", "Create", null, new { @class = "layui-btn layui-btn-sm" })
+    </p>
+    @Html.Partial("StudentTable", Model)
+    <div id="js-page-bar"></div>
+    <div id="js-loading" class="loader" style="display: none;">Loading...</div>
+    <script src="~/dist/layui/layui.js"></script>
+    <script src="~/js/jquery-1.9.1.min.js"></script>
+    <script src="~/dist/pjax/jquery.pjax.js"></script>
+    <script>
+        layui.use(['laypage', 'layer'], function () {
+            var laypage = layui.laypage
+            , layer = layui.layer;
+            laypage.render({
+                elem: 'js-page-bar'
+                , count: @ViewBag.TotalCount
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , curr: @(Request["pageIndex"] ?? "1")
+                , limit: @(Request["pageSize"] ?? "10")
+                , jump: function (obj, isFirstLoad) {
+                    console.log(obj, isFirstLoad);
+                    if (!isFirstLoad) {
+                        pageGo(obj.curr, obj.limit);
+                    }
+                }
+            });
+        });
+
+        function pageGo(pageIndex, pageSize) {
+            if ($.support.pjax) {
+                $.pjax({
+                    url: '@Url.Action("Index")?pageIndex=' + pageIndex + '&pageSize=' + pageSize,
+                    container: '#js-pjax-container',
+                    type: 'GET',
+                    fragment: '#js-pjax-container'
+                });
+            }
+        }
+
+        $(document).on('pjax:send', function () {
+            $('#js-loading').show();
+        });
+        $(document).on('pjax:complete', function () {
+            $('#js-loading').hide("slow");
+        });
+    </script>
+</body>
+</html>
