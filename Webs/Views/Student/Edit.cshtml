@@ -73,8 +73,8 @@
             $("#StudyNumber").focus();
             return;
         }
-        if (getByteLen($("#StudyNumber").val().trim()) > 30) {
-            layer.msg("学号不能超过30个字符");
+        if (getByteLen($("#StudyNumber").val().trim()) > 10) {
+            layer.msg("学号不能超过10个字符");
             $("#StudyNumber").focus();
             return;
         }
@@ -84,8 +84,8 @@
             $("#Mobile").focus();
             return;
         }
-        if (getByteLen($("#Mobile").val().trim()) > 11) {
-            layer.msg("手机号不能超过11个字符");
+        if (getByteLen($("#Mobile").val().trim()) > 20) {
+            layer.msg("手机号不能超过20个字符");
             $("#Mobile").focus();
             return;
         }

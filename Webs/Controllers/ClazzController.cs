@@ -23,7 +23,7 @@ namespace Webs.Controllers
             ViewBag.PageSize = pageSize;
 
             var data = (from m in list
-                        orderby m.ID ascending
+                        orderby m.ID descending
                         select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
             if (!string.IsNullOrEmpty(Request.Headers["X-PJAX"]) && Convert.ToBoolean(Request.Headers["X-PJAX"]))
