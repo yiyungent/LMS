@@ -16,6 +16,9 @@ namespace Webs.Controllers
         {
             IList<Clazz> list = Container.Instance.Resolve<ClazzService>().GetAll();
             ViewBag.TotalCount = list.Count;
+            // 当前页号超过总页数，则显示最后一页
+            int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
+            pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
             ViewBag.PageIndex = pageIndex;
             ViewBag.PageSize = pageSize;
 

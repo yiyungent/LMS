@@ -18,9 +18,12 @@ namespace Webs.Controllers
         {
             IList<Student> list = Container.Instance.Resolve<StudentService>().GetAll();
             ViewBag.TotalCount = list.Count;
+            // 当前页号超过总页数，则显示最后一页
+            int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
+            pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
             ViewBag.PageIndex = pageIndex;
             ViewBag.PageSize = pageSize;
-
+            // 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
             var data = (from m in list
                         orderby m.ID ascending
                         select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
