@@ -97,5 +97,17 @@ namespace Webs.Controllers
             }
         }
         #endregion
+
+        #region 查看明细
+        public ActionResult Details(int id)
+        {
+            // 1.准备实体
+            Clazz mo = Container.Instance.Resolve<ClazzService>().GetEntity(id);
+            // 2.返回视图前预处理
+
+            // 3.返回视图
+            return View(mo);
+        }
+        #endregion
     }
 }
