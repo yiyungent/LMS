@@ -99,6 +99,35 @@ namespace Webs.Controllers
         }
         #endregion
 
+        #region 修改
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            Student mo = Container.Instance.Resolve<StudentService>().GetEntity(id);
+            ViewBag.rblSex = InitRBLForSex(mo.Sex);
+            ViewBag.ddlClazz = InitDDLForClazz(mo.Clazz.ID);
+
+            return View(mo);
+        }
+
+
+
+        [HttpPost]
+        public string Edit(Student mo)
+        {
+            try
+            {
+                mo.Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(mo.Clazz.ID);
+                Container.Instance.Resolve<StudentService>().Edit(mo);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
         #region 查看明细
         public ActionResult Details(int id)
         {
@@ -112,6 +141,28 @@ namespace Webs.Controllers
         #endregion
 
         #region 辅助方法
+        /// <summary>
+        /// 初始化下拉备选项-班级
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        private IList<SelectListItem> InitDDLForClazz(int selectedValue)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            IList<Clazz> all = Container.Instance.Resolve<ClazzService>().GetAll();
+            foreach (var item in all)
+            {
+                ret.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = (selectedValue == item.ID)
+                });
+            }
+
+            return ret;
+        }
+
         /// <summary>
         /// 初始化单选备选项-性别
         /// </summary>
