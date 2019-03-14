@@ -58,5 +58,20 @@ namespace Webs.Controllers
             }
         }
         #endregion
+
+        #region 删除
+        public string Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<ClazzService>().Delete(id);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
     }
 }
