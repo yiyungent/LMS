@@ -54,6 +54,8 @@
                     type: 'GET',
                     fragment: '#js-pjax-container'
                 });
+            } else {
+                window.location.href = '@Url.Action("Index")?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
             }
         }
 
