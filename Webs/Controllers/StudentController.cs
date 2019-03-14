@@ -69,12 +69,7 @@ namespace Webs.Controllers
         {
             try
             {
-                mo.Sex = mo.Sex == 0 || mo.Sex == 1 ? mo.Sex : 0;
-                int clazzId;
-                if (Request["Clazz"] != null && int.TryParse(Request["Clazz"], out  clazzId))
-                {
-                    mo.Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(clazzId);
-                }
+                mo.Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(mo.Clazz.ID);
 
                 Container.Instance.Resolve<StudentService>().Create(mo);
 

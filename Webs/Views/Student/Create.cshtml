@@ -38,12 +38,6 @@
     <div class="layui-form-item">
         @Html.LabelFor(model => model.Clazz, new { @class = "layui-form-label" })
         <div class="layui-input-block">
-          @*<select name="Clazz">
-            @foreach (var keyValue in (Dictionary<int, string>)ViewBag.ddlClazz)
-            {
-                <option value="@keyValue.Key">@keyValue.Value</option>
-            }
-          </select>*@
             @Html.DropDownListFor(model => model.Clazz.ID, (IList<SelectListItem>)ViewBag.ddlClazz)
         </div>
     </div>
