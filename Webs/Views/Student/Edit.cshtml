@@ -11,6 +11,7 @@
     <button class="layui-btn layui-btn-sm" onclick="onCancel()">取消</button>
 </div>
 <form class="layui-form">
+    @Html.HiddenFor(model => model.ID)
     <div class="layui-form-item">
         @Html.LabelFor(model => model.Name, new { @class = "layui-form-label" })
         <div class="layui-input-block">

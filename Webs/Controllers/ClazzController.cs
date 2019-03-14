@@ -73,5 +73,29 @@ namespace Webs.Controllers
             }
         }
         #endregion
+
+        #region 修改
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            Clazz mo = Container.Instance.Resolve<ClazzService>().GetEntity(id);
+
+            return View(mo);
+        }
+
+        [HttpPost]
+        public string Edit(Clazz mo)
+        {
+            try
+            {
+                Container.Instance.Resolve<ClazzService>().Edit(mo);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
     }
 }

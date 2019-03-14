@@ -124,7 +124,6 @@ namespace Webs.Controllers
             }
             catch (Exception ex)
             {
-                // Row was updated or deleted by another transaction (or unsaved-value mapping
                 return ex.Message;
             }
         }
