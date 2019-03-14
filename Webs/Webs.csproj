@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckBoxListHelper.cs" />
+    <Compile Include="Controllers\ClazzController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\SysUserController.cs" />
@@ -377,6 +378,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Student\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Clazz\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Clazz\ClazzTable.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Clazz\Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

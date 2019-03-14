@@ -1,0 +1,33 @@
+﻿@model List<Domain.Clazz>
+
+@{
+    Layout = null;
+}
+
+<table id="js-pjax-container" class="layui-table" lay-size="sm">
+    <colgroup>
+        <col width="10">
+        <col width="10">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>班级名称</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <button class="layui-btn layui-btn-sm" onclick="onEdit(@item.ID)">修改</button>
+                    <button class="layui-btn layui-btn-sm" onclick="onDetails(@item.ID)">查看</button>
+                    <button class="layui-btn layui-btn-sm" onclick="onDelete(@item.ID)">删除</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

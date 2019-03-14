@@ -45,18 +45,21 @@ namespace Webs.Controllers
         #region 初始化学生
         private void InitStudent()
         {
-
-            for (int i = 0; i < 100; i++)
+            #region 生成 1700103001 - 1700103100 学生
+            int clazzId;
+            for (int i = 1; i <= 100; i++)
             {
+                clazzId = new Random().Next(1, 90);
                 Container.Instance.Resolve<StudentService>().Create(new Student
                 {
                     Name = "学生" + i,
                     Sex = i % 2,
-                    Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(1),
+                    Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(clazzId),
                     StudyNumber = "1700103" + i.ToString("000"),
                     Mobile = "11320" + i.ToString("000000")
                 });
-            }
+            } 
+            #endregion
 
             string[] names = { "张三", "李四", "王五" };
             int[] sexs = { 0, 1, 0 };
@@ -95,10 +98,15 @@ namespace Webs.Controllers
         #region 初始化班级
         private void InitClazz()
         {
-            Container.Instance.Resolve<ClazzService>().Create(new Clazz()
+            #region 生成 1700101 - 1700190 班级
+            for (int i = 1; i <= 90; i++)
             {
-                Name = "1700103班",
-            });
+                Container.Instance.Resolve<ClazzService>().Create(new Clazz()
+                {
+                    Name = string.Format("17001{0}班", i.ToString("00"))
+                });
+            } 
+            #endregion
         }
         #endregion
 

@@ -48,14 +48,17 @@ namespace Webs.Controllers
             ViewBag.rblSex = InitRBLForSex(0);
 
             IList<Clazz> list = Container.Instance.Resolve<ClazzService>().GetAll();
-            var clazzsIDAndName = from m in list
-                                  select new { m.ID, m.Name };
-            Dictionary<int, string> idAndNameDic = new Dictionary<int, string>();
-            foreach (int id in clazzsIDAndName.Select(m => m.ID))
-            {
-                idAndNameDic.Add(id, clazzsIDAndName.Where(m => m.ID == id).First().Name);
-            }
-            ViewBag.ddlClazz = idAndNameDic;
+            #region 废弃
+            //var clazzsIDAndName = from m in list
+            //                      select new { m.ID, m.Name };
+            //Dictionary<int, string> idAndNameDic = new Dictionary<int, string>();
+            //foreach (int id in clazzsIDAndName.Select(m => m.ID))
+            //{
+            //    idAndNameDic.Add(id, clazzsIDAndName.Where(m => m.ID == id).First().Name);
+            //}
+            //ViewBag.ddlClazz = idAndNameDic; 
+            #endregion
+            ViewBag.ddlClazz = InitDDLForClazz(list[0].ID);
 
             // 3.返回视图
             return View(mo);
@@ -110,8 +113,6 @@ namespace Webs.Controllers
             return View(mo);
         }
 
-
-
         [HttpPost]
         public string Edit(Student mo)
         {
@@ -123,6 +124,7 @@ namespace Webs.Controllers
             }
             catch (Exception ex)
             {
+                // Row was updated or deleted by another transaction (or unsaved-value mapping
                 return ex.Message;
             }
         }
