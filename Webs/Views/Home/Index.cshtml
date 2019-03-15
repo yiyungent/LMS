@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link href="~/css/HomeIndex.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script>
+    $(function () {
+        setScreenSize();
+    });
+    function setScreenSize() {
+        // 1.获取浏览器可显示内容的高度
+        var screenHeight = 1000;
+        // 2.计算子页面显示高度
+        var headerHeight = 60;
+        var footerHeight = 30;
+        var readerDivHeight = screenHeight - headerHeight - footerHeight;
+        // 2.设置子页面显示高度
+        $("#divCenter").css("height", readerDivHeight);
+    }
+</script>
+<div class="page">
+    <div>
+        <!-- Header -->
+        <div class="s4_header">
+            <h1 class="s4_fl s4_s_logo"><img src="/Images/header_logo.png" alt="" /></h1>
+            <p class="s4_fr s4_right">
+                <a href="/SysUser/ChangePWD" target="frameContentPage">修改密码</a>
+                <a href="/SysUser/Logout" onclick="return confirm('您确信要注销吗?')">注销</a>
+            </p>
+        </div>
+    </div>
+    <div id="divCenter">
+        <table border="0" cellpadding="0" style="width: 100%">
+            <tr>
+                <td valign="top" width="150" bgcolor="#F0F0F0" style="border-right: solid 1px #157FA8">
+                    
+                </td>
+                <td>
+                    <div id="divContentPage">
+                        <iframe id="frameContentPage" name="frameContentPage"></iframe>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="divFooter">
+        <div>版权所有: 啊哈哈&nbsp;&nbsp;&nbsp;&nbsp;技术支持：啊哈哈</div>
+    </div>
+</div>

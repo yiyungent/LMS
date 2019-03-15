@@ -185,6 +185,7 @@
     <Content Include="Config\Service.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="css\HomeIndex.css" />
     <Content Include="dist\loader.css" />
     <Content Include="css\PagedList.css" />
     <Content Include="css\Site.css" />
@@ -393,6 +394,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Clazz\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -14,13 +14,12 @@ namespace Webs.Controllers
 {
     public class HomeController : Controller
     {
-        //
-        // GET: /Home/
-
+        #region 首页
         public ActionResult Index()
         {
             return View();
-        }
+        } 
+        #endregion
 
         #region 初始化数据库
         public ActionResult InitDB()

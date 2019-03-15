@@ -1,0 +1,39 @@
+﻿.page {
+    min-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.s4_header {
+    height: 60px;
+    background-color: #3997C0;
+    border-bottom: 5px #1891b4 solid;
+}
+.s4_fl {
+    float: left;
+}
+.s4_fr {
+    float: right;
+}
+.s4_s_logo {
+    height: 60px;
+    width: 795px;
+    overflow: hidden;
+}
+.s4_right {
+    padding-right: 20px;
+    padding-top: 20px;
+}
+.s4_header .s4_s_logo img {
+    display: block;
+}
+#divContentPage {
+    margin-left: 19px;
+}
+#divFooter {
+    background-color: #3997C0;
+    text-align: center;
+    color: #FFFFFF;
+    height: 30px;
+    line-height: 30px;
+    clear: both;
+}
