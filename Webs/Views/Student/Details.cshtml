@@ -38,7 +38,7 @@
         @Html.LabelFor(model => model.Clazz, new { @class = "layui-form-label" })
         <div class="layui-input-block">
             <select name="Clazz">
-                <option value="@Model.Clazz.ID" selected>@Model.Clazz.Name</option>
+                <option value="@(Model.Clazz == null ? "0" : Model.Clazz.ID.ToString())" selected>@(Model.Clazz == null ? "无所在班级" : Model.Clazz.Name)</option>
             </select>
         </div>
     </div>

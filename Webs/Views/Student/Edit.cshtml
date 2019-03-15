@@ -89,6 +89,13 @@
             $("#Mobile").focus();
             return;
         }
+        // 1.2 所在班级
+        if ($("#Clazz_ID").val() == "0") {
+            if (!confirm('注意: 当前学生无所在班级, 确定要强制保存吗？')) {
+                // 取消保存
+                return;
+            }
+        }
         // 2.提交数据
         $.ajax({
             type: "post",

@@ -87,6 +87,12 @@
             $("#Mobile").focus();
             return;
         }
+        // 1.2 所在班级
+        if ($("#Clazz_ID").val() == "0") {
+            layer.msg("请选择所在班级");
+            $("#Clazz_ID").focus();
+            return;
+        }
         // 2.提交数据
         $.ajax({
             type: "post",

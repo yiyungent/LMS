@@ -61,7 +61,7 @@ namespace Webs.Controllers
             //}
             //ViewBag.ddlClazz = idAndNameDic; 
             #endregion
-            ViewBag.ddlClazz = InitDDLForClazz(list[0].ID);
+            ViewBag.ddlClazz = InitDDLForClazz(0);
 
             // 3.返回视图
             return View(mo);
@@ -106,7 +106,7 @@ namespace Webs.Controllers
         {
             Student mo = Container.Instance.Resolve<StudentService>().GetEntity(id);
             ViewBag.rblSex = InitRBLForSex(mo.Sex);
-            ViewBag.ddlClazz = InitDDLForClazz(mo.Clazz.ID);
+            ViewBag.ddlClazz = InitDDLForClazz(mo.Clazz == null ? 0 : mo.Clazz.ID);
 
             return View(mo);
         }
@@ -116,7 +116,15 @@ namespace Webs.Controllers
         {
             try
             {
-                mo.Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(mo.Clazz.ID);
+                if (mo.Clazz.ID == 0)
+                {
+                    // 允许 保存修改 无所在班级的学生信息
+                    mo.Clazz = null;
+                }
+                else
+                {
+                    mo.Clazz = Container.Instance.Resolve<ClazzService>().GetEntity(mo.Clazz.ID);
+                }
                 Container.Instance.Resolve<StudentService>().Edit(mo);
                 return "ok";
             }
@@ -133,7 +141,6 @@ namespace Webs.Controllers
             // 1.准备实体
             Student mo = Container.Instance.Resolve<StudentService>().GetEntity(id);
             // 2.返回视图前预处理
-
             // 3.返回视图
             return View(mo);
         }
@@ -143,11 +150,15 @@ namespace Webs.Controllers
         /// <summary>
         /// 初始化下拉备选项-班级
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
         private IList<SelectListItem> InitDDLForClazz(int selectedValue)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
+            ret.Add(new SelectListItem()
+            {
+                Text = "请选择班级",
+                Value = "0",
+                Selected = (selectedValue == 0)
+            });
             IList<Clazz> all = Container.Instance.Resolve<ClazzService>().GetAll();
             foreach (var item in all)
             {

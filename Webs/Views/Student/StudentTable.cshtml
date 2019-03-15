@@ -40,7 +40,8 @@
                     @Html.DisplayFor(modelItem => item.Mobile)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Clazz.Name)
+                    @*@Html.DisplayFor(modelItem => item.Clazz.Name)*@
+                    @(item.Clazz == null ? "" : item.Clazz.Name)
                 </td>
                 <td>
                     <button class="layui-btn layui-btn-sm" onclick="onEdit(@item.ID)">修改</button>

@@ -36,10 +36,11 @@ namespace Webs.Controllers
         private void CreateDB()
         {
             CreateSchema();
+            InitMenu();
             InitUser();
+            InitRole();
             InitClazz();
             InitStudent();
-            InitRole();
         }
 
         #region 初始化学生
@@ -58,7 +59,7 @@ namespace Webs.Controllers
                     StudyNumber = "1700103" + i.ToString("000"),
                     Mobile = "11320" + i.ToString("000000")
                 });
-            } 
+            }
             #endregion
 
             string[] names = { "张三", "李四", "王五" };
@@ -105,7 +106,7 @@ namespace Webs.Controllers
                 {
                     Name = string.Format("17001{0}班", i.ToString("00"))
                 });
-            } 
+            }
             #endregion
         }
         #endregion
@@ -210,7 +211,106 @@ namespace Webs.Controllers
         }
         #endregion
 
-        #region 创建数据库结构
+        #region 初始化菜单
+        private void InitMenu()
+        {
+            try
+            {
+                Response.Write(".........初始化菜单<br/>");
+                #region 一级菜单
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "系统管理",
+                    SortCode = 10,
+                });
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "业务管理",
+                    SortCode = 20,
+                });
+                #endregion
+
+                SysMenu parentMenu = null;
+                #region 系统管理的二级菜单
+                parentMenu = Container.Instance.Resolve<SysMenuService>().GetEntity(1);
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "菜单管理",
+                    ClassName = "Webs.Controllers.SysMenuController",
+                    ControllerName = "SysMenu",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 10,
+                });
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "用户管理",
+                    ClassName = "Webs.Controllers.SysUserController",
+                    ControllerName = "SysUser",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 20,
+                });
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "角色管理",
+                    ClassName = "Webs.Controllers.SysRoleController",
+                    ControllerName = "SysRole",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 30,
+                });
+                #endregion
+
+                #region 业务的二级菜单
+                parentMenu = Container.Instance.Resolve<SysMenuService>().GetEntity(2);
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "接单管理",
+                    ClassName = "Webs.Controllers.TransportOrderController",
+                    ControllerName = "TransportOrder",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 10,
+                });
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "调度管理",
+                    ClassName = "Webs.Controllers.DeliveryFormController",
+                    ControllerName = "DeliveryForm",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 20,
+                });
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "回车报销管理",
+                    ClassName = "Webs.Controllers.BillingController",
+                    ControllerName = "Billing",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 30,
+                });
+                Container.Instance.Resolve<SysMenuService>().Create(new SysMenu()
+                {
+                    Name = "产值分析",
+                    ClassName = "Webs.Controllers.AchievementController",
+                    ControllerName = "Achievement",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 40,
+                });
+                #endregion
+                Response.Write(".........初始化菜单ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化菜单Error<br/>");
+            }
+        }
+        #endregion
+
+        #region  创建数据库结构
         private void CreateSchema()
         {
             try
