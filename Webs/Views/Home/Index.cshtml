@@ -1,5 +1,12 @@
 ﻿@{
     ViewBag.Title = "Index";
+    IList<Domain.SysMenu> allMenu = ViewBag.allMenu;
+    var firstMenu = from m in allMenu
+                    where m.ParentMenu == null
+                    orderby m.SortCode
+                    select m;
+    //var firstMenu = allMenu.Where(m => m.ParentMenu == null)
+    //                         .OrderBy(m => m.SortCode);
 }
 <link href="~/css/HomeIndex.css" rel="stylesheet" />
 <script src="~/js/jquery-1.9.1.min.js"></script>
@@ -7,23 +14,72 @@
 <script>
     $(function () {
         setScreenSize();
+        window.onresize = setScreenSize;
     });
     function setScreenSize() {
-        // 1.获取浏览器可显示内容的高度
-        var screenHeight = 1000;
-        // 2.计算子页面显示高度
+        // 1.高度
+        // 1.1.获取浏览器可显示内容的高度
+        var screenHeight = getTotalHeight();
+        // 1.2.计算子页面显示高度
         var headerHeight = 60;
         var footerHeight = 30;
-        var readerDivHeight = screenHeight - headerHeight - footerHeight;
-        // 2.设置子页面显示高度
+        var offsetHeight = 10;
+        var readerDivHeight = screenHeight - headerHeight - footerHeight - offsetHeight;
+        // 1.3.设置子页面显示高度
         $("#divCenter").css("height", readerDivHeight);
+        $("#divContentPage").css("height", readerDivHeight);
+        $("#frameContentPage").css("height", readerDivHeight);
+        // 2.宽度
+        // 2.1.获取浏览器可显示内容的高度
+        var screenWidth = getTotalWidth();
+        // 2.2.计算子页面显示宽度
+        var menuWidth = $("#divTopMenu").width();
+        var offsetWidth = 10;
+        var readerDivWidth = screenWidth - menuWidth - offsetWidth;
+        // 2.3.设置子页面显示宽度
+        $("#divCenter").css("width", screenWidth);
+        $("#divContentPage").css("width", readerDivWidth);
+        $("#frameContentPage").css("width", readerDivWidth);
+    }
+    function getTotalHeight() {
+        // 得到屏幕显示区的高度
+        var ret;
+        if ($.browser.msie) {
+            // IE浏览器
+            if (document.compatMode == "CSS1Compat") {
+                // 兼容模式
+                ret = document.documentElement.clientHeight;
+            } else {
+                ret = document.body.clientHeight;
+            }
+        } else {
+            // 非IE浏览器
+            ret = self.innerHeight;
+        }
+        return ret;
+    }
+    function getTotalWidth() {
+        // 得到屏幕显示区的高度
+        var ret;
+        if ($.browser.msie) {
+            // IE浏览器
+            if (document.compatMode == "CSS1Compat") {
+                // 兼容模式
+                ret = document.documentElement.clientWidth;
+            } else {
+                ret = document.body.clientWidth;
+            }
+        } else {
+            // 非IE浏览器
+            ret = self.innerWidth;
+        }
+        return ret;
     }
 </script>
 <div class="page">
     <div>
         <!-- Header -->
-        <div class="s4_header">
-            <h1 class="s4_fl s4_s_logo"><img src="/Images/header_logo.png" alt="" /></h1>
+        <div class="s4_header"><h1 class="s4_fl s4_s_logo"><img src="/Images/header_logo.png" alt="" /></h1>
             <p class="s4_fr s4_right">
                 <a href="/SysUser/ChangePWD" target="frameContentPage">修改密码</a>
                 <a href="/SysUser/Logout" onclick="return confirm('您确信要注销吗?')">注销</a>
@@ -33,12 +89,36 @@
     <div id="divCenter">
         <table border="0" cellpadding="0" style="width: 100%">
             <tr>
-                <td valign="top" width="150" bgcolor="#F0F0F0" style="border-right: solid 1px #157FA8">
+                <td valign="top" bgcolor="#F0F0F0" style="border-right: solid 1px #157FA8">
+                    <div id="divTopMenu">
+                        <div class="header">
+                            <ul class="nav">
+                                @foreach (var item in firstMenu)
+                                {
+                                    var findSecondMenu = from m in allMenu
+                                                         where  m.ParentMenu != null && m.ParentMenu.ID ==  item.ID
+                                                         orderby m.SortCode
+                                                         select m;
+                                    <li>
+                                        <a href="#">@item.Name</a>
+                                        <ul class="second-nav">
+                                            @foreach (var menu in findSecondMenu)
+                                            {
+                                                <li>
+                                                    <a href="/@menu.ControllerName/@menu.ActionName" target="frameContentPage">@menu.Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
                     
                 </td>
                 <td>
                     <div id="divContentPage">
-                        <iframe id="frameContentPage" name="frameContentPage"></iframe>
+                        <iframe id="frameContentPage" name="frameContentPage" frameborder="0"></iframe>
                     </div>
                 </td>
             </tr>

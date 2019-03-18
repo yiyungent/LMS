@@ -50,8 +50,8 @@ namespace Webs.Controllers
             // 2.返回前预处理
             ViewBag.rblSex = InitRBLForSex(0);
 
-            IList<Clazz> list = Container.Instance.Resolve<ClazzService>().GetAll();
             #region 废弃
+            //IList<Clazz> list = Container.Instance.Resolve<ClazzService>().GetAll();
             //var clazzsIDAndName = from m in list
             //                      select new { m.ID, m.Name };
             //Dictionary<int, string> idAndNameDic = new Dictionary<int, string>();
@@ -61,6 +61,7 @@ namespace Webs.Controllers
             //}
             //ViewBag.ddlClazz = idAndNameDic; 
             #endregion
+
             ViewBag.ddlClazz = InitDDLForClazz(0);
 
             // 3.返回视图

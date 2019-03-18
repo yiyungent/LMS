@@ -7,6 +7,8 @@
     height: 60px;
     background-color: #3997C0;
     border-bottom: 5px #1891b4 solid;
+
+    overflow: hidden;
 }
 .s4_fl {
     float: left;
@@ -36,4 +38,11 @@
     height: 30px;
     line-height: 30px;
     clear: both;
+}
+
+#divTopMenu ul {
+    list-style: none;
+    /*float: left;*/
+    direction: ltr;
+    width: 250px;
 }

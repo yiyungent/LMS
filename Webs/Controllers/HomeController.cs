@@ -17,8 +17,10 @@ namespace Webs.Controllers
         #region 首页
         public ActionResult Index()
         {
+            IList<SysMenu> allMenu = Container.Instance.Resolve<SysMenuService>().GetAll();
+            ViewBag.allMenu = allMenu;
             return View();
-        } 
+        }
         #endregion
 
         #region 初始化数据库
