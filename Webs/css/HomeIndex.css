@@ -7,7 +7,6 @@
     height: 60px;
     background-color: #3997C0;
     border-bottom: 5px #1891b4 solid;
-
     overflow: hidden;
 }
 .s4_fl {
@@ -18,7 +17,7 @@
 }
 .s4_s_logo {
     height: 60px;
-    width: 795px;
+    /*width: 795px;*/
     overflow: hidden;
 }
 .s4_right {
@@ -39,10 +38,45 @@
     line-height: 30px;
     clear: both;
 }
-
-#divTopMenu ul {
+#divTopMenu {
+    margin-left: -38px;
+    width: 250px;
+}
+#divTopMenu ul, #divTopMenu li {
     list-style: none;
     /*float: left;*/
     direction: ltr;
-    width: 250px;
+}
+#divTopMenu ul a {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    text-decoration: none;
+}
+#divTopMenu ul>li {
+    margin-bottom: 2px;
+}
+#divTopMenu .s4_left_m1 {
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+    background: #3a99c1;
+}
+#divTopMenu .s4_left_m1.current, #divTopMenu .s4_left_m1:hover {
+    background-position: 0 0;
+}
+#divTopMenu ul ol a {
+    color: #333;
+    font-size: 14px;
+    text-align: center;
+    margin-left: -38px;
+}
+#divTopMenu ul ol {
+    display: none;
+}
+#divTopMenu ul ol a:hover, #divTopMenu ul ol a.current {
+    background: #fff;
+    color: #157fa8;
 }

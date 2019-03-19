@@ -13,8 +13,34 @@
 <script src="~/js/jquery-migrate-1.1.1.js"></script>
 <script>
     $(function () {
+        // 自适应页面大小
         setScreenSize();
+        // 绑定窗口大小改变事件
         window.onresize = setScreenSize;
+
+        // 设置菜单的显示
+        $("#divTopMenu .s4_left_m1").click(function () {
+            // 一级菜单移除当前菜单设置
+            $("#divTopMenu .s4_left_m1").removeClass("current");
+            // 隐藏全部二级菜单
+            $("#divTopMenu ol").hide();
+            // 设置当前菜单
+            $(this).addClass("current");
+            // 显示当前菜单的二级菜单
+            $(this).next("ol").show();
+        });
+
+        // 打开页面时默认展开第一个一级菜单
+        $("#divTopMenu .s4_left_m1").eq(0).addClass("current");
+        $("#divTopMenu ol").eq(0).show();
+
+        // 设置二级菜单项的 Click 事件
+        $("#divTopMenu ol a").click(function () {
+            // 取消全部二级菜单的当前菜单设置
+            $("#divTopMenu ol a").removeClass("current");
+            // 设置当前二级菜单
+            $(this).addClass("current");
+        });
     });
     function setScreenSize() {
         // 1.高度
@@ -79,7 +105,8 @@
 <div class="page">
     <div>
         <!-- Header -->
-        <div class="s4_header"><h1 class="s4_fl s4_s_logo"><img src="/Images/header_logo.png" alt="" /></h1>
+        <div class="s4_header">
+            <img class="s4_s_logo" src="/images/header_logo.png" alt="" />
             <p class="s4_fr s4_right">
                 <a href="/SysUser/ChangePWD" target="frameContentPage">修改密码</a>
                 <a href="/SysUser/Logout" onclick="return confirm('您确信要注销吗?')">注销</a>
@@ -100,15 +127,15 @@
                                                          orderby m.SortCode
                                                          select m;
                                     <li>
-                                        <a href="#">@item.Name</a>
-                                        <ul class="second-nav">
+                                        <a class="s4_left_m1" href="#">@item.Name</a>
+                                        <ol class="second-nav">
                                             @foreach (var menu in findSecondMenu)
                                             {
                                                 <li>
                                                     <a href="/@menu.ControllerName/@menu.ActionName" target="frameContentPage">@menu.Name</a>
                                                 </li>
                                             }
-                                        </ul>
+                                        </ol>
                                     </li>
                                 }
                             </ul>
