@@ -9,6 +9,7 @@
     //                         .OrderBy(m => m.SortCode);
 }
 <link href="~/css/HomeIndex.css" rel="stylesheet" />
+<link href="~/css/ViewPage.css" rel="stylesheet" />
 <script src="~/js/jquery-1.9.1.min.js"></script>
 <script src="~/js/jquery-migrate-1.1.1.js"></script>
 <script>
@@ -49,18 +50,18 @@
         // 1.2.计算子页面显示高度
         var headerHeight = 60;
         var footerHeight = 30;
-        var offsetHeight = 10;
+        var offsetHeight = 25;
         var readerDivHeight = screenHeight - headerHeight - footerHeight - offsetHeight;
         // 1.3.设置子页面显示高度
         $("#divCenter").css("height", readerDivHeight);
-        $("#divContentPage").css("height", readerDivHeight);
-        $("#frameContentPage").css("height", readerDivHeight);
+        $("#divContentPage").css("height", readerDivHeight - 12);
+        $("#frameContentPage").css("height", readerDivHeight - 12);
         // 2.宽度
         // 2.1.获取浏览器可显示内容的高度
         var screenWidth = getTotalWidth();
         // 2.2.计算子页面显示宽度
         var menuWidth = $("#divTopMenu").width();
-        var offsetWidth = 10;
+        var offsetWidth = 50;
         var readerDivWidth = screenWidth - menuWidth - offsetWidth;
         // 2.3.设置子页面显示宽度
         $("#divCenter").css("width", screenWidth);
@@ -108,13 +109,13 @@
         <div class="s4_header">
             <img class="s4_s_logo" src="/images/header_logo.png" alt="" />
             <p class="s4_fr s4_right">
-                <a href="/SysUser/ChangePWD" target="frameContentPage">修改密码</a>
-                <a href="/SysUser/Logout" onclick="return confirm('您确信要注销吗?')">注销</a>
+                <a class="btn4" href="/SysUser/ChangePWD" target="frameContentPage">修改密码</a>
+                <a class="btn2" href="/SysUser/Logout" onclick="return confirm('您确信要注销吗?')">注销</a>
             </p>
         </div>
     </div>
     <div id="divCenter">
-        <table border="0" cellpadding="0" style="width: 100%">
+        <table border="0" cellpadding="0" style="width: 100%; border: 1px solid blue;">
             <tr>
                 <td valign="top" bgcolor="#F0F0F0" style="border-right: solid 1px #157FA8">
                     <div id="divTopMenu">

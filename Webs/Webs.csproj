@@ -296,6 +296,7 @@
     <Content Include="dist\layui\lay\modules\util.js" />
     <Content Include="dist\pjax\jquery.pjax.js" />
     <Content Include="Global.asax" />
+    <Content Include="images\header_logo.png" />
     <Content Include="js\jquery-1.9.1.min.js" />
     <Content Include="js\jquery-migrate-1.1.1.js" />
     <Content Include="js\layer\layer.js" />
