@@ -1,6 +1,7 @@
-﻿@model Domain.SysUser
+﻿@model Domain.SysMenu
+
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 <link href="~/css/ViewPage.css" rel="stylesheet" />
 <script src="~/js/jquery-1.9.1.min.js"></script>
@@ -8,6 +9,7 @@
 <script src="~/js/layer/layer.js"></script>
 <script>
     function onSubmit() {
+        /*
         // 1.验证输入
         // 1.1 用户名
         if ($("#Name").val().trim() == "") {
@@ -31,10 +33,11 @@
             $("#LoginAccount").focus();
             return;
         }
+        */
         // 2.提交数据
         $.ajax({
             type: "post",
-            url: "/SysUser/Edit",
+            url: "/SysMenu/Edit",
             data: $("form").serialize(),
             dataType: "text",
             success: function (rdata) {
@@ -75,41 +78,54 @@
     <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
     <input type="button" class="btn2" value="取消" onclick="onCancel()" />
 </div>
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(m => m.ID)
 
+@using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
+    @Html.HiddenFor(model => model.ID)
     <fieldset>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LoginAccount)
+            @Html.LabelFor(model => model.ClassName)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.LoginAccount)
+            @Html.EditorFor(model => model.ClassName)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Status)
+            @Html.LabelFor(model => model.ControllerName)
         </div>
         <div class="editor-field">
-            @Html.RadioButtonList("Status", (IList<SelectListItem>)ViewBag.rblStatus)
+            @Html.EditorFor(model => model.ControllerName)
         </div>
 
         <div class="editor-label">
-            担任角色
+            @Html.LabelFor(model => model.ActionName)
         </div>
         <div class="editor-field">
-            @Html.CheckBoxList("cblRole", (IList<SelectListItem>)ViewBag.cblRole)
+            @Html.EditorFor(model => model.ActionName)
         </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SortCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SortCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ParentMenu)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ParentMenu.ID", (IList<SelectListItem>)ViewBag.ddlParent)
+        </div>
+       
     </fieldset>
 }

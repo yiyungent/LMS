@@ -158,6 +158,10 @@ namespace Webs.Controllers
             // 1.准备实体
             SysUser mo = Container.Instance.Resolve<SysUserService>().GetEntity(id);
             // 2.返回视图前预处理
+            ViewBag.rblStatus = InitRBLForStatus(mo.Status);
+            var idRange = from m in mo.SysRoleList
+                          select m.ID;
+            ViewBag.cblRole = InitCBLForRole(idRange.ToList());
             // 3.返回视图
             return View(mo);
         }

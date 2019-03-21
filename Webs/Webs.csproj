@@ -170,6 +170,7 @@
     <Compile Include="Controllers\ClazzController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\SysMenuController.cs" />
     <Compile Include="Controllers\SysUserController.cs" />
     <Compile Include="Extensions\HtmlHelperExtRBL.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,6 +187,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="css\HomeIndex.css" />
+    <Content Include="css\jquery.treetable.css" />
+    <Content Include="css\jquery.treetable.theme.default.css" />
     <Content Include="dist\loader.css" />
     <Content Include="css\PagedList.css" />
     <Content Include="css\Site.css" />
@@ -299,6 +302,8 @@
     <Content Include="images\header_logo.png" />
     <Content Include="js\jquery-1.9.1.min.js" />
     <Content Include="js\jquery-migrate-1.1.1.js" />
+    <Content Include="js\jquery.jqprint.js" />
+    <Content Include="js\jquery.treetable.js" />
     <Content Include="js\layer\layer.js" />
     <Content Include="js\layer\mobile\layer.js" />
     <Content Include="js\layer\mobile\need\layer.css" />
@@ -398,6 +403,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysMenu\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysMenu\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysMenu\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

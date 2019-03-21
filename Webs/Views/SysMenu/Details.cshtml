@@ -1,0 +1,69 @@
+﻿@model Domain.SysMenu
+
+@{
+    ViewBag.Title = "Details";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/jquery.jqprint.js"></script>
+<script>
+    function onClose() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+    function onPrint() {
+        // 打印
+        $("#printArea").jqprint();
+    }
+</script>
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="返回" onclick="onClose()" />
+    <input type="button" value="打印" class="btn2" onclick="onPrint()" />
+</div>
+<fieldset id="printArea">
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.Name, new { @readonly = "readonly" })
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.ClassName)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.ClassName, new { @readonly = "readonly" })
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.ControllerName)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.ControllerName, new { @readonly = "readonly" })
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.ActionName)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.ActionName, new { @readonly = "readonly" })
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.SortCode)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.SortCode, new { @readonly = "readonly" })
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.ParentMenu)
+    </div>
+    <div class="display-field">
+        @Html.TextBox("ParentMenu.Name", Model.ParentMenu == null ? "(无)" : Model.ParentMenu.Name)
+        @*@Html.TextBoxFor(m => m.ParentMenu, new { Value = Model.ParentMenu == null ? "(无)" : Model.ParentMenu.Name })*@
+        @*@(Model.ParentMenu == null ? "(无)" : Model.ParentMenu.Name)*@
+    </div>
+</fieldset>
+

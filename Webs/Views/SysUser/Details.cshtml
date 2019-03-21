@@ -14,39 +14,33 @@
     <input type="button" class="btn2" value="返回" onclick="onClose()" />
 </div>
 <fieldset>
-    <div class="display-label">
-        @Html.DisplayNameFor(model => model.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LoginAccount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LoginAccount)
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Name, new { @readonly = "readonly" })
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Password)
-    </div>
-    <div class="display-field">
-        ******
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LoginAccount)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.LoginAccount, new { @readonly = "readonly" })
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
-    </div>
-    <div class="display-field">
-        @(Model.Status == 0 ? "正常" : "禁用")
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.RadioButtonList("Status", (IList<SelectListItem>)ViewBag.rblStatus, new { disabled = "disabled" })
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SysRoleList)
-    </div>
-    <div class="display-field">
-        @string.Join("|", from m in Model.SysRoleList select m.Name)
-    </div>
-</fieldset>
+        <div class="editor-label">
+            担任角色
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxList("cblRole", (IList<SelectListItem>)ViewBag.cblRole, new { disabled = "disabled" })
+        </div>
+    </fieldset>
 

@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Domain.SysMenu>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/css/PagedList.css" rel="stylesheet" />
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<link href="~/css/jquery.treetable.css" rel="stylesheet" />
+<link href="~/css/jquery.treetable.theme.default.css" rel="stylesheet" />
+<link href="~/js/layer/theme/default/layer.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script src="~/js/jquery.treetable.js"></script>
+<script>
+    function onDetails(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "查看",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '300px'],
+            content: ['/SysMenu/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+        });
+    }
+
+    function onEdit(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "修改",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '300px'],
+            content: ['/SysMenu/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+
+    $(function () {
+        $("#tree").treetable({ expandable: true, initialState: 'expanded' });
+    });
+</script>
+<h2 style="text-align: center;">菜单列表</h2>
+
+
+<table id="tree" class="dataGrid">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ControllerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SortCode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    string pStr = string.Empty;
+    pStr = (item.ParentMenu != null) ? "data-tt-parent-id=" + item.ParentMenu.ID : "";
+    <tr data-tt-id="@item.ID" @pStr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ControllerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SortCode)
+        </td>
+        <td>
+            <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
+            <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
+        </td>
+    </tr>
+}
+
+</table>
+
