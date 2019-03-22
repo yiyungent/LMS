@@ -42,13 +42,52 @@
         });
     }
 
+    function onAdd() {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "新增",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '300px'],
+            content: ['/SysMenu/Create', 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                location.href = location.href; // 刷新页面
+            }
+        });
+    }
+
+    function onDelete(id) {
+        if (confirm('您确认要删除吗？')) {
+            // 删除
+            $.ajax({
+                type: "post",
+                url: "/SysMenu/Delete",
+                data: { id: id },
+                dataType: "text",
+                success: function (rdata) {
+                    if (rdata == "ok") {
+                        // 提交成功
+                        // 刷新列表
+                        location.href = location.href;
+                    } else {
+                        // 提交失败
+                        //alert(rdata);
+                        layer.message(rdata);
+                    }
+                }
+            });
+        }
+    }
+
     $(function () {
         $("#tree").treetable({ expandable: true, initialState: 'expanded' });
     });
 </script>
 <h2 style="text-align: center;">菜单列表</h2>
 
-
+<input type="button" value="新增" class="btn2" onclick="onAdd()" />
 <table id="tree" class="dataGrid">
     <tr>
         <th>
@@ -91,6 +130,7 @@
         <td>
             <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
             <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
+            <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />
         </td>
     </tr>
 }

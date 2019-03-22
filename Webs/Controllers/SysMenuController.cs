@@ -89,6 +89,59 @@ namespace Webs.Controllers
         }
         #endregion
 
+        #region 新增
+        [HttpGet]
+        public ActionResult Create()
+        {
+            // 1.准备实体
+            // 注意：一定要 new Children，因为后面会遍历此 Children,此时它不能为 null
+            SysMenu mo = new SysMenu() { ID = 0, Children = new List<SysMenu>() };
+            // 2.返回前预处理
+            ViewBag.ddlParent = InitDDLForParent(mo, 0);
+            // 3.返回视图
+            return View(mo);
+        }
+
+        [HttpPost]
+        public string Create(SysMenu mo)
+        {
+            try
+            {
+                // 1.提交前预处理
+                if (mo.ParentMenu.ID == 0)
+                {
+                    mo.ParentMenu = null;
+                }
+                // 2.提交数据库
+                Container.Instance.Resolve<SysMenuService>().Create(mo);
+
+                // 3.保存成功返回
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                // 4.保存失败返回异常
+                return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 删除
+        [HttpPost]
+        public string Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<SysMenuService>().Delete(id);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
         #region 辅助方法
         /// <summary>
         /// 添加自己及子女的递归方法--生成树表数据
