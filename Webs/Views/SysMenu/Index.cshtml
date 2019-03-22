@@ -53,7 +53,7 @@
             area: ['500px', '300px'],
             content: ['/SysMenu/Create', 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
-                location.href = location.href; // 刷新页面
+                //location.href = location.href; // 刷新页面
             }
         });
     }
@@ -73,8 +73,8 @@
                         location.href = location.href;
                     } else {
                         // 提交失败
-                        //alert(rdata);
-                        layer.message(rdata);
+                        alert(rdata);
+                        //layer.message(rdata);
                     }
                 }
             });
@@ -90,7 +90,7 @@
 <input type="button" value="新增" class="btn2" onclick="onAdd()" />
 <table id="tree" class="dataGrid">
     <tr>
-        <th>
+        <th style="text-align: left;">
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>

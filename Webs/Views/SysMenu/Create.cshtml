@@ -43,7 +43,9 @@
             success: function (rdata) {
                 if (rdata == "ok") {
                     // 提交成功
-                    // 3.关闭弹窗
+                    // 3.1 刷新父窗口
+                    window.parent.location.reload();
+                    // 3.2 关闭弹窗
                     parent.layer.close(parent.layer.index);
                 } else {
                     // 提交失败

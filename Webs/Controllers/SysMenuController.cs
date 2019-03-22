@@ -95,7 +95,9 @@ namespace Webs.Controllers
         {
             // 1.准备实体
             // 注意：一定要 new Children，因为后面会遍历此 Children,此时它不能为 null
-            SysMenu mo = new SysMenu() { ID = 0, Children = new List<SysMenu>() };
+            // 第一种解决：直接 new ()
+            //SysMenu mo = new SysMenu() { ID = 0, Children = new List<SysMenu>() };
+            SysMenu mo = new SysMenu();
             // 2.返回前预处理
             ViewBag.ddlParent = InitDDLForParent(mo, 0);
             // 3.返回视图
@@ -132,7 +134,15 @@ namespace Webs.Controllers
         {
             try
             {
-                Container.Instance.Resolve<SysMenuService>().Delete(id);
+                SysMenu mo = Container.Instance.Resolve<SysMenuService>().GetEntity(id);
+                if (mo.Children == null || mo.Children.Count == 0)
+                {
+                    Container.Instance.Resolve<SysMenuService>().Delete(id);
+                }
+                else
+                {
+                    return "该菜单有子菜单，不允许删除";
+                }
                 return "ok";
             }
             catch (Exception ex)
@@ -237,7 +247,10 @@ namespace Webs.Controllers
         {
             // 添加自己
             idRange.Add(self.ID);
+
             // 关于子女循环
+            // 第二种解决方法：
+            if (self.Children == null) return;
             foreach (var item in self.Children)
             {
                 // 递归调用---添加自己和自己的子女
