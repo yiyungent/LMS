@@ -472,6 +472,9 @@
   <ItemGroup>
     <Content Include="Views\SysRole\Index.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysRole\Create.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

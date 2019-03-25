@@ -1,0 +1,109 @@
+﻿@model Domain.SysRole
+@{
+    ViewBag.Title = "Create";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<link href="~/js/dhtmlxtree/dhtmlxtree.css" rel="stylesheet" />
+<style>
+    #divTree {
+        width: 300px;
+        border: 1px solid Silver;
+        overflow: auto;
+        display: block;
+    }
+</style>
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script src="~/js/dhtmlxtree/dhtmlxtree.js"></script>
+<script src="~/js/dhtmlxtree/dhtmlxcommon.js"></script>
+<script>
+    var tree;
+    $(function () {
+        tree = new dhtmlXTreeObject("divTree", "100%", "100%", 0);
+        // 设置主题
+        tree.setSkin("dhx_skyblue");
+        // 设置图片路径
+        tree.setImagePath("/js/dhtmlxtree/csh_bluebooks/");
+        // 设置支持复选框
+        tree.enableCheckBoxes(1);
+        // 设置三态模式
+        tree.enableThreeStateCheckboxes(1);
+        // 加载数据
+        tree.loadXML("/SysRole/GenXmlForMenuTree");
+        // 初始化选中节点
+        tree.attachEvent("onXLE", function () {
+            // hAuthID
+            var ids = $("#hAuthID").val();
+            if (ids != null && ids.length > 0) {
+                var arr = ids.split("|");
+                for (var i = 0; i < arr.length; i++) {
+                    tree.setCheck("f", +arr[i] , true);
+                }
+            }
+        });
+    });
+
+    function onSubmit() {
+        // 1.验证输入
+        
+        // 2.提交数据
+        $.ajax({
+            type: "post",
+            url: "/SysRole/Create",
+            data: $("form").serialize(),
+            dataType: "text",
+            success: function (rdata) {
+                if (rdata == "ok") {
+                    // 提交成功
+                    // 3.关闭弹窗
+                    parent.layer.close(parent.layer.index);
+                } else {
+                    // 提交失败
+                    //alert(rdata);
+                    layer.message(rdata);
+                }
+            }
+        });
+        // 3.关闭弹窗
+    }
+    function onCancel() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+</script>
+
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.Hidden("hAuthID", (string)ViewBag.AuthID)
+    <fieldset>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.RadioButtonList("Status", (IList<SelectListItem>)ViewBag.rblStatus)
+        </div>
+
+        <div class="editor-label">
+            角色权限
+        </div>
+        <div id="divTree">
+            
+        </div>
+    </fieldset>
+}
