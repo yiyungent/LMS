@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using Castle.ActiveRecord;
+using NHibernate.Criterion;
 using Domain;
 using Service;
 using Core;
@@ -38,6 +39,7 @@ namespace Webs.Controllers
         {
             CreateSchema();
             InitMenu();
+            InitFunction();
             InitUser();
             InitRole();
             InitClazz();
@@ -324,6 +326,44 @@ namespace Webs.Controllers
             {
                 //Response.Write("......失败！原因：" + ex.Message + "<br/>");
                 Response.Write(string.Format("......失败！原因： {0}<br/>", ex.Message));
+            }
+        }
+        #endregion
+
+        #region 初始化系统操作
+        private void InitFunction()
+        {
+            try
+            {
+                Response.Write(".........初始化系统操作<br/>");
+                IList<ICriterion> qryWhere = new List<ICriterion>();
+                // 2-8
+                qryWhere.Add(Expression.Ge("ID", 2));
+                qryWhere.Add(Expression.Le("ID", 8));
+                IList<SysMenu> find = Container.Instance.Resolve<SysMenuService>().Query(qryWhere);
+                string[] opNames = { "新增", "修改", "删除", "查看" };
+                foreach (var item in find)
+                {
+                    for (int i = 0; i < opNames.Length; i++)
+                    {
+                        Container.Instance.Resolve<SysFunctionService>().Create(new SysFunction()
+                        {
+                            Name = opNames[i],
+                            SysMenu = item
+                        });
+                    }
+                }
+                // 9
+                Container.Instance.Resolve<SysFunctionService>().Create(new SysFunction()
+               {
+                   Name = "查看",
+                   SysMenu = Container.Instance.Resolve<SysMenuService>().GetEntity(9)
+               });
+                Response.Write(".........初始化系统操作ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化系统操作Error<br/>");
             }
         }
         #endregion

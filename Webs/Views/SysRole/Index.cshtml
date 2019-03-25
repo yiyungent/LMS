@@ -1,5 +1,5 @@
 ﻿@using PagedList.Mvc
-@model PagedList.PagedList<Domain.SysUser>
+@model PagedList.PagedList<Domain.SysRole>
 
 @{
     ViewBag.Title = "Index";
@@ -20,7 +20,7 @@
             shade: 0.4,
             shadeClose: false,
             area: ['500px', '300px'],
-            content: ['/SysUser/Create', 'yes'], // iframe的url，yes代表显示滚动条
+            content: ['/SysRole/Create', 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
                 location.href = location.href; // 刷新页面
             }
@@ -35,7 +35,7 @@
             shade: 0.4,
             shadeClose: false,
             area: ['500px', '300px'],
-            content: ['/SysUser/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            content: ['/SysRole/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
                 location.href = location.href; // 刷新页面
             }
@@ -50,37 +50,15 @@
             shade: 0.4,
             shadeClose: false,
             area: ['500px', '300px'],
-            content: ['/SysUser/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            content: ['/SysRole/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
         });
-    }
-    function onReset(id) {
-        if (confirm('您确认要重置吗？')) {
-            // 重置
-            $.ajax({
-                type: "post",
-                url: "/SysUser/Reset",
-                data: { id: id },
-                dataType: "text",
-                success: function (rdata) {
-                    if (rdata == "ok") {
-                        // 提交成功
-                        // 刷新列表
-                        location.href = location.href;
-                    } else {
-                        // 提交失败
-                        //alert(rdata);
-                        layer.message(rdata);
-                    }
-                }
-            });
-        }
     }
     function onDelete(id) {
         if (confirm('您确认要删除吗？')) {
             // 删除
             $.ajax({
                 type: "post",
-                url: "/SysUser/Delete",
+                url: "/SysRole/Delete",
                 data: { id: id },
                 dataType: "text",
                 success: function (rdata) {
@@ -98,8 +76,7 @@
         }
     }
 </script>
-<h2 style="text-align: center;">用户列表</h2>
-
+<h2 style="text-align: center;">角色列表</h2>
 @using (Html.BeginForm())
 {
     <input type="button" value="新增" class="btn2" onclick="onAdd()" />
@@ -109,19 +86,10 @@
 <table class="dataGrid">
     <tr>
         <th>
-            用户名
-        </th>
-        <th>
-            登录账号
-        </th>
-        <th>
-            密码
+            角色名
         </th>
         <th>
             状态
-        </th>
-        <th>
-            担任角色列表
         </th>
         <th>操作</th>
     </tr>
@@ -133,57 +101,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoginAccount)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Password)*@
-                *******
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Status)*@
                 @(item.Status == 0 ? "正常" : "禁用")
             </td>
             <td>
-                @* 方法一 *@
-                @*@{
-                    string names = string.Empty;
-                    if (item.SysRoleList != null && item.SysRoleList.Count > 0)
-                    { 
-                        int i = 0;
-                        foreach (var role in item.SysRoleList)
-                        {
-                            i = i + 1;
-                            //if (i == item.SysRoleList.Count)
-                            //{ 
-                            //    names = names + role.Name;
-                            //}
-                            //else
-                            //{
-                            //    names = names + role.Name + "|";
-                            //}
-                            string sep = (i == item.SysRoleList.Count) ? "" : "|";
-                            names = names + role.Name + sep;
-                        }
-                    }
-                }*@
-                @* 方法二 *@
-                @*@{
-                    string names = string.Empty;
-                    if (item.SysRoleList != null && item.SysRoleList.Count > 0)
-                    { 
-                        foreach (var role in item.SysRoleList)
-                        {
-                            names = names + role.Name + "|";
-                        }
-                        names = names.Substring(0, names.Length - 1);
-                    }
-                }*@
-
-                @* 方法三 *@
-                @string.Join(",", from m in item.SysRoleList select m.Name)
-            </td>
-            <td>
-                <input type="button" value="重置" class="btn2" onclick="onReset(@item.ID)" />
                 <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
                 <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
                 <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />

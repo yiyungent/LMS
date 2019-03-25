@@ -17,8 +17,27 @@ namespace Webs.Controllers
         #region 列表
         public ActionResult Index(int pageIndex = 1)
         {
-            IList<SysUser> lst = Container.Instance.Resolve<SysUserService>().GetAll();
-
+            // 1.准备查询条件
+            IList<ICriterion> qryWhere = new List<ICriterion>();
+            // 1.1按名称模糊查询
+            string qryName = string.Empty;
+            if (Request["qryName"] == null)
+            {
+                if (Session["user_qryName"] != null)
+                {
+                    qryName = (string)Session["user_qryName"];
+                }
+            }
+            else
+            {
+                qryName = Request["qryName"];
+                // 将查询条件存入 Session
+                Session["user_qryName"] = qryName;
+            }
+            qryWhere.Add(Expression.Like("Name", qryName, MatchMode.Anywhere));
+            // 2.获取数据
+            IList<SysUser> lst = Container.Instance.Resolve<SysUserService>().Query(qryWhere);
+            ViewBag.qryName = qryName;
 
             return View(lst.ToPagedList(pageIndex, 10)); // 强类型视图
         }

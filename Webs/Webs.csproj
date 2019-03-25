@@ -171,6 +171,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\SysMenuController.cs" />
+    <Compile Include="Controllers\SysRoleController.cs" />
     <Compile Include="Controllers\SysUserController.cs" />
     <Compile Include="Extensions\HtmlHelperExtRBL.cs" />
     <Compile Include="Global.asax.cs">
@@ -300,6 +301,58 @@
     <Content Include="dist\pjax\jquery.pjax.js" />
     <Content Include="Global.asax" />
     <Content Include="images\header_logo.png" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\blank.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\book.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\book_titel.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\but_cut.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\close2.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\folderClosed.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\folderOpen.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconCheckAll.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconCheckDis.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconChecked.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconCheckGray.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconSafe.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconText.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconUncheckAll.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\iconUncheckDis.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\leaf.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line1.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line1_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line2.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line2_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line3.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line3_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line4.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\line4_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\lock.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus1.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus2.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus2_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus3.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus3_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus4.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus4_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus5.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\minus5_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus1.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus2.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus2_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus3.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus3_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus4.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus4_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus5.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\plus5_rtl.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\radio_off.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\radio_on.gif" />
+    <Content Include="js\dhtmlxtree\csh_bluebooks\tombs.gif" />
+    <Content Include="js\dhtmlxtree\dhtmlxcommon.js" />
+    <Content Include="js\dhtmlxtree\dhtmlxtree.css" />
+    <Content Include="js\dhtmlxtree\dhtmlxtree.js" />
     <Content Include="js\jquery-1.9.1.min.js" />
     <Content Include="js\jquery-migrate-1.1.1.js" />
     <Content Include="js\jquery.jqprint.js" />
@@ -415,6 +468,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SysMenu\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SysRole\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
