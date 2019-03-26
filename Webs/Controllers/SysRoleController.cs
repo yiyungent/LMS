@@ -52,7 +52,16 @@ namespace Webs.Controllers
             SysRole mo = new SysRole();
             // 2.返回前预处理
             ViewBag.rblStatus = InitRBLForStatus(0);
-            ViewBag.AuthIds = "";
+
+            // 空值替换操作
+            //mo.SysMenuList = mo.SysMenuList ?? new List<SysMenu>();
+            //var menuIds = from m in mo.SysMenuList
+            //              select m.ID;
+
+            mo.SysFunctionList = mo.SysFunctionList ?? new List<SysFunction>();
+            var funcIds = from m in mo.SysFunctionList
+                          select m.ID;
+            ViewBag.AuthIds = string.Join("|", funcIds);
             // 3.返回视图
             return View(mo);
         }

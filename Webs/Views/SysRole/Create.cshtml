@@ -50,6 +50,10 @@
         // 1.验证输入
         
         // 2.提交数据
+        // 2.1提交前预处理
+        var ids = tree.getAllCheckedBranches();
+        $("#ids").val(ids);
+        // 2.2提交
         $.ajax({
             type: "post",
             url: "/SysRole/Create",
@@ -84,6 +88,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
+    @Html.Hidden("ids")
     @Html.Hidden("hAuthID", (string)ViewBag.AuthID)
     <fieldset>
 
