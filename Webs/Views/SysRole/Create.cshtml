@@ -1,6 +1,8 @@
 ﻿@model Domain.SysRole
 @{
     ViewBag.Title = "Create";
+    Random random = new Random();
+    int r = random.Next();
 }
 <link href="~/css/ViewPage.css" rel="stylesheet" />
 <link href="~/js/dhtmlxtree/dhtmlxtree.css" rel="stylesheet" />
@@ -15,8 +17,8 @@
 <script src="~/js/jquery-1.9.1.min.js"></script>
 <script src="~/js/jquery-migrate-1.1.1.js"></script>
 <script src="~/js/layer/layer.js"></script>
-<script src="~/js/dhtmlxtree/dhtmlxtree.js"></script>
 <script src="~/js/dhtmlxtree/dhtmlxcommon.js"></script>
+<script src="~/js/dhtmlxtree/dhtmlxtree.js"></script>
 <script>
     var tree;
     $(function () {
@@ -30,7 +32,7 @@
         // 设置三态模式
         tree.enableThreeStateCheckboxes(1);
         // 加载数据
-        tree.loadXML("/SysRole/GenXmlForMenuTree");
+        tree.loadXML("/SysRole/GenXmlForMenuTree?r=@r");
         // 初始化选中节点
         tree.attachEvent("onXLE", function () {
             // hAuthID
@@ -38,7 +40,7 @@
             if (ids != null && ids.length > 0) {
                 var arr = ids.split("|");
                 for (var i = 0; i < arr.length; i++) {
-                    tree.setCheck("f", +arr[i] , true);
+                    tree.setCheck("f" + arr[i] , true);
                 }
             }
         });
