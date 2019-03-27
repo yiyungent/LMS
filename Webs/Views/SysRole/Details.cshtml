@@ -1,6 +1,6 @@
 ﻿@model Domain.SysRole
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Details";
     Random random = new Random();
     int r = random.Next();
 }
@@ -31,6 +31,8 @@
         tree.enableCheckBoxes(1);
         // 设置三态模式
         tree.enableThreeStateCheckboxes(1);
+        // 设置只读
+        //tree.stopEdit();
         // 加载数据
         tree.loadXML("/SysRole/GenXmlForMenuTree?r=@r");
         // 初始化选中节点
@@ -45,34 +47,6 @@
             }
         });
     });
-
-    function onSubmit() {
-        // 1.验证输入
-        
-        // 2.提交数据
-        // 2.1提交前预处理
-        var ids = tree.getAllCheckedBranches();
-        $("#ids").val(ids);
-        // 2.2提交
-        $.ajax({
-            type: "post",
-            url: "/SysRole/Create",
-            data: $("form").serialize(),
-            dataType: "text",
-            success: function (rdata) {
-                if (rdata == "ok") {
-                    // 提交成功
-                    // 3.关闭弹窗
-                    parent.layer.close(parent.layer.index);
-                } else {
-                    // 提交失败
-                    //alert(rdata);
-                    layer.msg(rdata);
-                }
-            }
-        });
-        // 3.关闭弹窗
-    }
     function onCancel() {
         // 关闭弹窗
         parent.layer.close(parent.layer.index);
@@ -80,7 +54,6 @@
 </script>
 
 <div style="text-align: center;">
-    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
     <input type="button" class="btn2" value="取消" onclick="onCancel()" />
 </div>
 @using (Html.BeginForm())
@@ -88,7 +61,6 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    @Html.Hidden("ids")
     @Html.Hidden("hAuthID", (string)ViewBag.AuthIds)
     <fieldset>
 
@@ -96,21 +68,21 @@
             @Html.LabelFor(model => model.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new { @readonly = "readonly" })
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Status)
         </div>
         <div class="editor-field">
-            @Html.RadioButtonList("Status", (IList<SelectListItem>)ViewBag.rblStatus)
+            @Html.RadioButtonList("Status", (IList<SelectListItem>)ViewBag.rblStatus, new { disabled = "disabled" })
         </div>
 
         <div class="editor-label">
             角色权限
         </div>
         <div id="divTree">
-            
+
         </div>
     </fieldset>
 }

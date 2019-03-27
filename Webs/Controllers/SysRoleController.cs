@@ -67,25 +67,46 @@ namespace Webs.Controllers
         }
 
         [HttpPost]
-        public string Create(SysUser mo)
+        public string Create(SysRole mo)
         {
             try
             {
-                // 1.提交前预处理
-                // 1.1角色
-                if (Request["cblRole"] != null && Request["cblRole"].Length > 0)
+                string selectedIds = Request["ids"];
+                if (!string.IsNullOrEmpty(selectedIds))
                 {
-                    IList<int> idRange = StringHelper.ConvertIdRange(Request["cblRole"]);
-
-                    mo.SysRoleList = Container.Instance.Resolve<SysRoleService>().Query(new List<ICriterion>() { Expression.In("ID", idRange.ToArray()) });
-
+                    IList<int> menuIds = new List<int>();
+                    IList<int> funcIds = new List<int>();
+                    string[] idsArray = selectedIds.Split(',');
+                    foreach (string item in idsArray)
+                    {
+                        string pre = item.Substring(0, 1);
+                        int num = Convert.ToInt32(item.Substring(1));
+                        switch (pre)
+                        {
+                            case "f":
+                                funcIds.Add(num);
+                                break;
+                            case "m":
+                                menuIds.Add(num);
+                                break;
+                        }
+                    }
+                    if (menuIds.Count > 0)
+                    {
+                        IList<ICriterion> condition = new List<ICriterion>();
+                        condition.Add(Expression.In("ID", menuIds.ToArray()));
+                        mo.SysMenuList = Container.Instance.Resolve<SysMenuService>().Query(condition);
+                    }
+                    if (funcIds.Count > 0)
+                    {
+                        IList<ICriterion> condition = new List<ICriterion>();
+                        condition.Add(Expression.In("ID", funcIds.ToArray()));
+                        mo.SysFunctionList = Container.Instance.Resolve<SysFunctionService>().Query(condition);
+                    }
                 }
-                // 1.2密码
-                mo.Password = StringHelper.EncodeMD5(mo.Password);
-                // 2.提交数据库
-                Container.Instance.Resolve<SysUserService>().Create(mo);
 
-                // 3.保存成功返回
+                Container.Instance.Resolve<SysRoleService>().Create(mo);
+
                 return "ok";
             }
             catch (Exception ex)
@@ -152,6 +173,90 @@ namespace Webs.Controllers
             }
             // 3.关闭自己
             sb.Append("</item>");
+        }
+        #endregion
+
+        #region 编辑
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            SysRole mo = Container.Instance.Resolve<SysRoleService>().GetEntity(id);
+
+            ViewBag.rblStatus = InitRBLForStatus(mo.Status);
+            mo.SysFunctionList = mo.SysFunctionList == null ? new List<SysFunction>() : mo.SysFunctionList;
+            var funcIds = from m in mo.SysFunctionList
+                          select m.ID;
+            ViewBag.AuthIds = string.Join("|", funcIds);
+
+            return View(mo);
+        }
+
+        [HttpPost]
+        public string Edit(SysRole mo)
+        {
+            try
+            {
+                SysRole dbmo = Container.Instance.Resolve<SysRoleService>().GetEntity(mo.ID);
+                string selectedIds = Request["ids"];
+                if (!string.IsNullOrEmpty(selectedIds))
+                {
+                    IList<int> menuIds = new List<int>();
+                    IList<int> funcIds = new List<int>();
+                    string[] idsArray = selectedIds.Split(',');
+                    foreach (string item in idsArray)
+                    {
+                        string pre = item.Substring(0, 1);
+                        int num = Convert.ToInt32(item.Substring(1));
+                        switch (pre)
+                        {
+                            case "f":
+                                funcIds.Add(num);
+                                break;
+                            case "m":
+                                menuIds.Add(num);
+                                break;
+                        }
+                    }
+                    if (menuIds.Count > 0)
+                    {
+                        IList<ICriterion> condition = new List<ICriterion>();
+                        condition.Add(Expression.In("ID", menuIds.ToArray()));
+                        dbmo.SysMenuList = Container.Instance.Resolve<SysMenuService>().Query(condition);
+                    }
+                    if (funcIds.Count > 0)
+                    {
+                        IList<ICriterion> condition = new List<ICriterion>();
+                        condition.Add(Expression.In("ID", funcIds.ToArray()));
+                        dbmo.SysFunctionList = Container.Instance.Resolve<SysFunctionService>().Query(condition);
+                    }
+                }
+
+                dbmo.Name = mo.Name;
+                dbmo.Status = mo.Status;
+
+                Container.Instance.Resolve<SysRoleService>().Edit(dbmo);
+
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 查看明细
+        public ActionResult Details(int id)
+        {
+            SysRole mo = Container.Instance.Resolve<SysRoleService>().GetEntity(id);
+
+            ViewBag.rblStatus = InitRBLForStatus(mo.Status);
+            mo.SysFunctionList = mo.SysFunctionList == null ? new List<SysFunction>() : mo.SysFunctionList;
+            var funcIds = from m in mo.SysFunctionList
+                          select m.ID;
+            ViewBag.AuthIds = string.Join("|", funcIds);
+
+            return View(mo);
         }
         #endregion
 
