@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Webs.Controllers
 {
-    public class ClazzController : Controller
+    public class ClazzController : BaseController
     {
         #region 列表
         public ActionResult Index(int pageIndex = 1, int pageSize = 10)

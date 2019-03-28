@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Webs.Controllers
 {
-    public class SysRoleController : Controller
+    public class SysRoleController : BaseController
     {
         #region 列表
         public ActionResult Index(int pageIndex = 1)

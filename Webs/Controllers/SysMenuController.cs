@@ -12,7 +12,7 @@ using PagedList;
 
 namespace Webs.Controllers
 {
-    public class SysMenuController : Controller
+    public class SysMenuController : BaseController
     {
         #region 列表
         public ActionResult Index()

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<style>
+    table {
+        background-color: blue;
+        border: 0;
+    }
+    tr {
+        background-color: white;
+    }
+    #tdBtn {
+        text-align: center;
+    }
+    input {
+        width: 120px;
+    }
+    #info {
+        color: red;
+        font-size: 10pt;
+    }
+</style>
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script>
+    function onLogin() {
+        var account = $("#LoginAccount").val();
+        var pwd = $("#Password").val();
+        $.ajax({
+            type: "post",
+            url: "/SysUser/Login",
+            data: { LoginAccount: account, Password: pwd },
+            dataType: "text",
+            success: function (rdata) {
+                if (rdata == "账号错误") {
+                    $("#info").html(rdata);
+                    $("#LoginAccount").focus();
+                    return;
+                }
+
+                if (rdata == "密码错误") {
+                    $("#info").html(rdata);
+                    $("#Password").focus();
+                    return;
+                }
+
+                if (rdata == "账号被禁用") {
+                    $("#info").html(rdata);
+                    $("#LoginAccount").focus();
+                    return;
+                }
+                
+                // 跳转到首页
+                window.location.href = "/Home/Index";
+            }
+        });
+    }
+</script>
+
+<center>
+    <h2>用户登录</h2>
+    <table>
+        <tr>
+            <td>登录账号</td>
+            <td>@Html.TextBox("LoginAccount")</td>
+        </tr>
+        <tr>
+            <td>登录密码</td>
+            <td>@Html.Password("Password")</td>
+        </tr>
+        <tr>
+            <td colspan="2" id="tdBtn">
+                <input type="button" value="登录" class="btn2" onclick="onLogin()" />
+            </td>
+        </tr>
+    </table>
+    <div id="info"></div>
+</center>

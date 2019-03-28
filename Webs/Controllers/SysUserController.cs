@@ -12,7 +12,7 @@ using PagedList;
 
 namespace Webs.Controllers
 {
-    public class SysUserController : Controller
+    public class SysUserController : BaseController
     {
         #region 列表
         public ActionResult Index(int pageIndex = 1)
@@ -146,6 +146,59 @@ namespace Webs.Controllers
             {
                 return ex.Message;
             }
+        }
+        #endregion
+
+        #region 登录
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public string Login(SysUser mo)
+        {
+            string ret = string.Empty;
+
+            // 1.检查账号
+            // 1.1根据账号查询
+            IList<SysUser> find = Container.Instance.Resolve<SysUserService>().Query(new List<ICriterion>() { Expression.Eq("LoginAccount", mo.LoginAccount) });
+            if (find == null || find.Count == 0)
+            {
+                return "账号错误";
+            }
+            // 2.检查密码
+            bool pwdRight = false;
+            bool statusRight = false;
+            SysUser loginUser = null;
+            foreach (var item in find)
+            {
+                if (item.Password == Comm.StringHelper.EncodeMD5(mo.Password))
+                {
+                    pwdRight = true;
+                    // 3.检查状态
+                    if (item.Status == 0)
+                    {
+                        statusRight = true;
+                        loginUser = item;
+                        break;
+                    }
+                }
+            }
+            if (pwdRight == false)
+            {
+                return "密码错误";
+            }
+            if (statusRight == false)
+            {
+                return "账号被禁用";
+            }
+            // 通过验证:
+            ret = "登录成功";
+            // 保存登录用户到 Session
+            Session["loginUser"] = loginUser;
+
+            return ret;
         }
         #endregion
 

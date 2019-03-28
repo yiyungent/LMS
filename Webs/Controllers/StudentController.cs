@@ -11,7 +11,7 @@ using Comm;
 
 namespace Webs.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         #region 列表
         public ActionResult Index(int pageIndex = 1, int pageSize = 10)
