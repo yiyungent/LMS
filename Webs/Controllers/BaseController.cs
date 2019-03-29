@@ -56,7 +56,8 @@ namespace Webs.Controllers
             {
                 foreach (var menu in role.SysMenuList)
                 {
-                    if (menu.ControllerName == controllerName && menu.ActionName == actionName)
+                    if (menu.ClassName != null && menu.ClassName.ToUpper() == controllerName.ToUpper() && menu.ActionName == actionName)
+                    //if (string.Equals(menu.ClassName, controllerName, StringComparison.OrdinalIgnoreCase) && menu.ActionName == actionName)
                     {
                         ret = true;
                         break;

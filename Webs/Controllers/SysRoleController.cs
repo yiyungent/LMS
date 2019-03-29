@@ -260,6 +260,23 @@ namespace Webs.Controllers
         }
         #endregion
 
+        #region 删除
+        [HttpPost]
+        public string Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<SysRoleService>().Delete(id);
+
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
         #region 辅助方法
         /// <summary>
         /// 初始化单选备选项-状态

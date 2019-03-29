@@ -18,9 +18,46 @@ namespace Webs.Controllers
         #region 首页
         public ActionResult Index()
         {
-            IList<SysMenu> allMenu = Container.Instance.Resolve<SysMenuService>().GetAll();
+            IList<SysMenu> allMenu = GetMenuAuthForLoginUser();
             ViewBag.allMenu = allMenu;
             return View();
+        }
+        #endregion
+
+        #region 辅助方法
+        /// <summary>
+        /// 获取当前登录用户的菜单权限
+        /// </summary>
+        private IList<SysMenu> GetMenuAuthForLoginUser()
+        {
+            IList<SysMenu> ret = new List<SysMenu>();
+            // 确定 LoginUser
+            if (Session["loginUser"] != null)
+            {
+                SysUser loginUser = (SysUser)Session["loginUser"];
+                foreach (var role in loginUser.SysRoleList)
+                {
+                    foreach (var menu in role.SysMenuList)
+                    {
+                        // 判断 ret 中是否已经存在当前菜单
+                        bool exist = false;
+                        foreach (var item in ret)
+                        {
+                            if (item.ID == menu.ID)
+                            {
+                                exist = true;
+                                break;
+                            }
+                        }
+                        // 如果不存在添加当前菜单到 ret
+                        if (exist == false)
+                        {
+                            ret.Add(menu);
+                        }
+                    }
+                }
+            }
+            return ret;
         }
         #endregion
 
