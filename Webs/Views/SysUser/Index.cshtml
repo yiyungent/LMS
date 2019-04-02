@@ -1,8 +1,11 @@
 ﻿@using PagedList.Mvc
+@using Domain
 @model PagedList.PagedList<Domain.SysUser>
 
 @{
     ViewBag.Title = "Index";
+    IList<SysFunction> authFunctionList = (IList<SysFunction>)ViewBag.authFunctionList;
+    var funcNames = from m in authFunctionList select m.Name;
 }
 <link href="~/css/PagedList.css" rel="stylesheet" />
 <link href="~/css/ViewPage.css" rel="stylesheet" />
@@ -22,7 +25,7 @@
             area: ['500px', '300px'],
             content: ['/SysUser/Create', 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
-                location.href = location.href; // 刷新页面
+                //location.href = location.href; // 刷新页面
             }
         });
     }
@@ -37,7 +40,7 @@
             area: ['500px', '300px'],
             content: ['/SysUser/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
-                location.href = location.href; // 刷新页面
+                //location.href = location.href; // 刷新页面
             }
         });
     }
@@ -102,7 +105,10 @@
 
 @using (Html.BeginForm())
 {
+    if (funcNames.Contains("新增"))
+    {
     <input type="button" value="新增" class="btn2" onclick="onAdd()" />
+    }
     @Html.TextBox("qryName", (string)ViewBag.qryName, new { placeholder = "角色名模糊查找" })
     <input type="submit" value="查询" class="btn2" />
 }
@@ -184,9 +190,18 @@
             </td>
             <td>
                 <input type="button" value="重置" class="btn2" onclick="onReset(@item.ID)" />
+                @if (funcNames.Contains("修改"))
+                {
                 <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
+                }
+                @if (funcNames.Contains("查看"))
+                {
                 <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
+                }
+                @if (funcNames.Contains("删除"))
+                {
                 <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />
+                }
             </td>
         </tr>
     }

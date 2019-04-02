@@ -1,4 +1,7 @@
-﻿using Domain;
+﻿using Core;
+using Domain;
+using NHibernate.Criterion;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +59,7 @@ namespace Webs.Controllers
             {
                 foreach (var menu in role.SysMenuList)
                 {
-                    if (menu.ClassName != null && menu.ClassName.ToUpper() == controllerName.ToUpper() && menu.ActionName == actionName)
+                    if (menu.ClassName != null && menu.ClassName.ToUpper() == controllerName.ToUpper())
                     //if (string.Equals(menu.ClassName, controllerName, StringComparison.OrdinalIgnoreCase) && menu.ActionName == actionName)
                     {
                         ret = true;
@@ -65,6 +68,50 @@ namespace Webs.Controllers
                 }
             }
             return ret;
+        }
+
+        /// <summary>
+        /// 操作权限-----当前账号当前模块的操作权限
+        /// </summary>
+        public IList<SysFunction> GetAuthForMenu(string controllerName, string actionName)
+        {
+            IList<SysFunction> authFunctionList = new List<SysFunction>();
+            if (Session["loginUser"] != null)
+            {
+                // 确定当前模块
+                // 确定操作
+                var findMenu = Container.Instance.Resolve<SysMenuService>().Query(new List<ICriterion>()
+                {
+                    Expression.Eq("ControllerName", controllerName),
+                    Expression.Eq("ActionName", actionName)
+                }).FirstOrDefault();
+                int menuId = findMenu == null ? 0 : findMenu.ID;
+                //int menuId = (findMenu ?? new SysMenu()).ID;
+                // 确定当前账号
+                SysUser loginUser = (SysUser)Session["loginUser"];
+                foreach (var role in loginUser.SysRoleList)
+                {
+                    foreach (var func in role.SysFunctionList)
+                    {
+                        if (func.SysMenu.ID != menuId) continue;
+
+                        bool exist = false;
+                        foreach (var item in authFunctionList)
+                        {
+                            if (item.ID == func.ID)
+                            {
+                                exist = true;
+                                break;
+                            }
+                        }
+                        if (exist == false)
+                        {
+                            authFunctionList.Add(func);
+                        }
+                    }
+                }
+            }
+            return authFunctionList;
         }
     }
 }

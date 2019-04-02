@@ -37,7 +37,10 @@ namespace Webs.Controllers
             qryWhere.Add(Expression.Like("Name", qryName, MatchMode.Anywhere));
             // 2.获取数据
             IList<SysUser> lst = Container.Instance.Resolve<SysUserService>().Query(qryWhere);
+            // 3.返回视图前预处理
             ViewBag.qryName = qryName;
+            // 操作权限-----当前账号当前模块的操作权限
+            ViewBag.authFunctionList = GetAuthForMenu("SysUser", "Index");
 
             return View(lst.ToPagedList(pageIndex, 10)); // 强类型视图
         }
@@ -199,6 +202,18 @@ namespace Webs.Controllers
             Session["loginUser"] = loginUser;
 
             return ret;
+        }
+        #endregion
+
+        #region 注销
+        public ActionResult Logout()
+        {
+            // 清除 Session
+            Session.Clear();
+            Session.Abandon();
+            // 跳转登录
+            //return View("Login");
+            return RedirectToAction("Login");
         }
         #endregion
 

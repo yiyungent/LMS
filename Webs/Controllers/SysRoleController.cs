@@ -39,7 +39,11 @@ namespace Webs.Controllers
             // 2.获取数据
             IList<SysRole> lst = Container.Instance.Resolve<SysRoleService>().Query(qryWhere);
             ViewBag.qryName = qryName;
-            // 3.返回视图
+            // 3.返回视图前预处理
+            // 操作权限-----当前账号当前模块的操作权限
+            ViewBag.authFunctionList = GetAuthForMenu("SysRole", "Index");
+
+            // 4.返回视图
             return View(lst.ToPagedList(pageIndex, 10)); // 强类型视图
         }
         #endregion

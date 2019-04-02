@@ -77,8 +77,8 @@ namespace Webs.Controllers
             CreateSchema();
             InitMenu();
             InitFunction();
-            InitUser();
             InitRole();
+            InitUser();
             InitClazz();
             InitStudent();
         }
@@ -157,6 +157,7 @@ namespace Webs.Controllers
             try
             {
                 Response.Write(".........初始化用户<br/>");
+                #region 废弃
                 //SysUser sysUser = new SysUser();
                 //sysUser.Name = "系统管理员";
                 //sysUser.LoginAccount = "admin";
@@ -171,14 +172,17 @@ namespace Webs.Controllers
                 //    Password = "123456",
                 //    Status = 0
                 //};
-                //Container.Instance.Resolve<SysUserService>().Create(sysUser);
+                //Container.Instance.Resolve<SysUserService>().Create(sysUser); 
+                #endregion
+                var allRole = Container.Instance.Resolve<SysRoleService>().GetAll();
 
                 Container.Instance.Resolve<SysUserService>().Create(new SysUser()
                 {
                     Name = "系统管理员",
                     LoginAccount = "admin",
                     Password = StringHelper.EncodeMD5("123456"),
-                    Status = 0
+                    Status = 0,
+                    SysRoleList = (from m in allRole where m.ID == 2 select m).ToList(),
                 });
 
                 Container.Instance.Resolve<SysUserService>().Create(new SysUser()
@@ -186,7 +190,8 @@ namespace Webs.Controllers
                     Name = "莫宇",
                     LoginAccount = "my",
                     Password = StringHelper.EncodeMD5("123456"),
-                    Status = 0
+                    Status = 0,
+                    SysRoleList = (from m in allRole where m.ID == 1 select m).ToList(),
                 });
 
                 for (int i = 0; i < 100; i++)
@@ -199,6 +204,55 @@ namespace Webs.Controllers
                         Status = 0
                     });
                 }
+                // ID=20 接单员
+                SysUser user = Container.Instance.Resolve<SysUserService>().GetEntity(20);
+                user.SysRoleList = (from m in allRole where m.ID == 3 select m).ToList();
+                Container.Instance.Resolve<SysUserService>().Edit(user);
+                // ID=[30, 35] 调度员
+                IList<int> idRange = new List<int>() { 30, 31, 32, 33, 34, 35 };
+                var findUser = Container.Instance.Resolve<SysUserService>().Query(new List<ICriterion>()
+                {
+                    Expression.In("ID", idRange.ToArray())
+                });
+                foreach (var item in findUser)
+                {
+                    item.SysRoleList = (from m in allRole where m.ID == 4 select m).ToList();
+                    Container.Instance.Resolve<SysUserService>().Edit(item);
+                }
+                // ID=[40, 45] 驾驶员
+                idRange = new List<int>() { 40, 41, 42, 43, 44, 45 };
+                findUser = Container.Instance.Resolve<SysUserService>().Query(new List<ICriterion>()
+                {
+                    Expression.In("ID", idRange.ToArray())
+                });
+                foreach (var item in findUser)
+                {
+                    item.SysRoleList = (from m in allRole where m.ID == 6 select m).ToList();
+                    Container.Instance.Resolve<SysUserService>().Edit(item);
+                }
+                // ID=[50, 55] 财务员
+                idRange = new List<int>() { 50, 51, 52, 53, 54, 55 };
+                findUser = Container.Instance.Resolve<SysUserService>().Query(new List<ICriterion>()
+                {
+                    Expression.In("ID", idRange.ToArray())
+                });
+                foreach (var item in findUser)
+                {
+                    item.SysRoleList = (from m in allRole where m.ID == 6 select m).ToList();
+                    Container.Instance.Resolve<SysUserService>().Edit(item);
+                }
+                // ID=[60, 65] 决策员
+                idRange = new List<int>() { 60, 61, 62, 63, 64, 65 };
+                findUser = Container.Instance.Resolve<SysUserService>().Query(new List<ICriterion>()
+                {
+                    Expression.In("ID", idRange.ToArray())
+                });
+                foreach (var item in findUser)
+                {
+                    item.SysRoleList = (from m in allRole where m.ID == 7 select m).ToList();
+                    Container.Instance.Resolve<SysUserService>().Edit(item);
+                }
+
                 Response.Write(".........初始化用户ok<br/>");
             }
             catch (Exception ex)
@@ -214,30 +268,74 @@ namespace Webs.Controllers
             try
             {
                 Response.Write(".........初始化角色<br/>");
+                var allMenu = Container.Instance.Resolve<SysMenuService>().GetAll();
+                var allFunction = Container.Instance.Resolve<SysFunctionService>().GetAll();
 
                 Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
                 {
+                    Name = "开发人员",
+                    Status = 0,
+                    SysMenuList = allMenu,
+                    SysFunctionList = allFunction
+                });
+                IList<int> idRange = new List<int>() { 1, 3, 4, 6 };
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
                     Name = "系统管理员",
+                    SysMenuList = (from m in allMenu
+                                   where idRange.Contains(m.ID)
+                                   select m).ToList(),
+                    SysFunctionList = (from m in allFunction where m.SysMenu != null && idRange.Contains(m.SysMenu.ID) select m).ToList(),
                     Status = 0
                 });
+                idRange = new List<int>() { 2, 6 };
                 Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
                 {
                     Name = "接单员",
+                    SysMenuList = (from m in allMenu
+                                   where idRange.Contains(m.ID)
+                                   select m).ToList(),
+                    SysFunctionList = (from m in allFunction where m.SysMenu != null && idRange.Contains(m.SysMenu.ID) select m).ToList(),
                     Status = 0
                 });
+                idRange = new List<int>() { 2, 7 };
                 Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
                 {
                     Name = "调度员",
+                    SysMenuList = (from m in allMenu
+                                   where idRange.Contains(m.ID)
+                                   select m).ToList(),
+                    SysFunctionList = (from m in allFunction where m.SysMenu != null && idRange.Contains(m.SysMenu.ID) select m).ToList(),
                     Status = 0
                 });
+                idRange = new List<int>() { 2, 8, 9 };
                 Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
                 {
                     Name = "财务员",
+                    SysMenuList = (from m in allMenu
+                                   where idRange.Contains(m.ID)
+                                   select m).ToList(),
+                    SysFunctionList = (from m in allFunction where m.SysMenu != null && idRange.Contains(m.SysMenu.ID) select m).ToList(),
                     Status = 0
                 });
+                idRange = new List<int>() { 2, 8 };
                 Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
                 {
                     Name = "驾驶员",
+                    SysMenuList = (from m in allMenu
+                                   where idRange.Contains(m.ID)
+                                   select m).ToList(),
+                    SysFunctionList = (from m in allFunction where m.SysMenu != null && idRange.Contains(m.SysMenu.ID) select m).ToList(),
+                    Status = 0
+                });
+                idRange = new List<int>() { 2, 9 };
+                Container.Instance.Resolve<SysRoleService>().Create(new SysRole()
+                {
+                    Name = "决策人员",
+                    SysMenuList = (from m in allMenu
+                                   where idRange.Contains(m.ID)
+                                   select m).ToList(),
+                    SysFunctionList = (from m in allFunction where m.SysMenu != null && idRange.Contains(m.SysMenu.ID) select m).ToList(),
                     Status = 0
                 });
 

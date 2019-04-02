@@ -41,11 +41,12 @@
                 if (rdata == "ok") {
                     // 提交成功
                     // 3.关闭弹窗
+                    window.parent.location.reload();
                     parent.layer.close(parent.layer.index);
                 } else {
                     // 提交失败
-                    //alert(rdata);
-                    layer.message(rdata);
+                    alert(rdata);
+                    //layer.msg(rdata);
                 }
             }
         });
