@@ -217,6 +217,61 @@ namespace Webs.Controllers
         }
         #endregion
 
+        #region 修改密码
+        public ActionResult ChangePWD()
+        {
+            SysUser mo = new SysUser();
+            if (Session["loginUser"] != null)
+            {
+                mo = (SysUser)Session["loginUser"];
+            }
+
+            return View(mo);
+        }
+
+        /// <summary>
+        /// 验证旧密码
+        /// </summary>
+        public string CheckOldPassword(string oldPwd, int loginUserId)
+        {
+            SysUser mo = Container.Instance.Resolve<SysUserService>().GetEntity(loginUserId);
+            if (Session["loginUser"] != null)
+            {
+                mo = (SysUser)Session["loginUser"];
+            }
+            if (mo.Password == StringHelper.EncodeMD5(oldPwd))
+            {
+                return "ok";
+            }
+            else
+            {
+                return "error";
+            }
+        }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        public string ChangePassword(string newPwd, int loginUserId)
+        {
+            try
+            {
+                SysUser mo = Container.Instance.Resolve<SysUserService>().GetEntity(loginUserId);
+                if (Session["loginUser"] != null)
+                {
+                    mo = (SysUser)Session["loginUser"];
+                }
+                mo.Password = StringHelper.EncodeMD5(newPwd);
+                Container.Instance.Resolve<SysUserService>().Edit(mo);
+
+                return "ok";
+            }
+            catch (Exception exp)
+            {
+                return exp.Message;
+            }
+        }
+        #endregion
+
         #region 重置密码
         public string Reset(int id)
         {

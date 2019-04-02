@@ -1,0 +1,96 @@
+﻿@model Domain.SysUser
+@{
+    ViewBag.Title = "ChangePWD";
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script>
+    function onSubmit() {
+        var id = $("#ID").val(); // 当前登录账号的ID
+        // 1.验证
+        // 1.1.验证原密码
+        var oldPwd = $("#oldPwd").val();
+        $.ajax({
+            type: "post",
+            url: "/SysUser/CheckOldPassword",
+            data: { oldPwd: oldPwd, loginUserId: id },
+            dataType: "text",
+            success: function (rdata) {
+                if (rdata == "ok") {
+                    // 1.2.验证新密码
+                    var newPwd = $("#newPwd").val();
+                    var confirmPwd = $("#confirmPwd").val();
+                    if (newPwd.trim().length > 0 && newPwd == confirmPwd) {
+                        // 2.提交
+                        $.ajax({
+                            type: "post",
+                            url: "/SysUser/ChangePassword",
+                            data: { newPwd: newPwd, loginUserId: id },
+                            dataType: "text",
+                            success: function (rdata) {
+                                if (rdata == "ok") {
+                                    // 提交成功
+                                    alert("修改成功，请重新登录");
+                                    // 跳转登录
+                                    window.location.href = "/SysUser/Login";
+                                } else {
+                                    // 提交失败
+                                    alert(rdata);
+                                }
+                            }
+                        });
+                    } else {
+                        alert("密码不一致，请重新输入");
+                        $("#newPwd").focus();
+                    }
+                } else {
+                    alert("原密码错误");
+                    $("#oldPwd").focus();
+                }
+            }
+        });
+    }
+</script>
+<h2>更改密码</h2>
+<div>
+    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+</div>
+<fieldset>
+    @Html.HiddenFor(m => m.ID)
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Name, new { @readonly = "readonly" })
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.LoginAccount)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.LoginAccount, new { @readonly = "readonly" })
+    </div>
+
+    <div class="editor-label">
+        原密码
+    </div>
+    <div class="editor-field">
+        @Html.Password("oldPwd")
+    </div>
+
+    <div class="editor-label">
+        新密码
+    </div>
+    <div class="editor-field">
+        @Html.Password("newPwd")
+    </div>
+
+    <div class="editor-label">
+        确认密码
+    </div>
+    <div class="editor-field">
+        @Html.Password("confirmPwd")
+    </div>
+</fieldset>
