@@ -25,5 +25,25 @@
                service="Service.ClazzService,Service"
                type="Component.ClazzComponent,Component"
                isTransactional="true" />
+    <component id="ClientService"
+               service="Service.ClientService,Service"
+               type="Component.ClientComponent,Component"
+               isTransactional="true" />
+    <component id="DeliveryTypeService"
+               service="Service.DeliveryTypeService,Service"
+               type="Component.DeliveryTypeComponent,Component"
+               isTransactional="true" />
+    <component id="ProvinceService"
+               service="Service.ProvinceService,Service"
+               type="Component.ProvinceComponent,Component"
+               isTransactional="true" />
+    <component id="TransportOrderService"
+               service="Service.TransportOrderService,Service"
+               type="Component.TransportOrderComponent,Component"
+               isTransactional="true" />
+    <component id="TransportOrderItemService"
+               service="Service.TransportOrderItemService,Service"
+               type="Component.TransportOrderItemComponent,Component"
+               isTransactional="true" />
   </components>
 </configuration>

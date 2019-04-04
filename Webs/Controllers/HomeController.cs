@@ -81,7 +81,174 @@ namespace Webs.Controllers
             InitUser();
             InitClazz();
             InitStudent();
+            InitClient();
+            InitDeliverType();
+            InitProvince();
+            InitTransportOrder();
+            InitTransportOrderItem();
         }
+
+        #region 初始化货运单
+        private void InitTransportOrder()
+        {
+            try
+            {
+                Response.Write(".........初始化货运单<br/>");
+
+                string[] startStations = { "重庆", "上海", "云南", "北京", "四川", "成都", "重庆", "上海", "云南", "北京", "四川", "成都" };
+                string[] endStations = { "武汉", "香港", "深圳", "广州", "杭州", "台湾", "重庆", "上海", "云南", "北京", "四川", "成都" };
+
+                string[] startPlace = { "重庆", "上海", "云南", "北京", "四川", "成都", "重庆", "上海", "云南", "北京", "四川", "成都" };
+                string[] endPlace = { "武汉", "香港", "深圳", "广州", "杭州", "台湾", "重庆", "上海", "云南", "北京", "四川", "成都" };
+
+                for (int i = 0; i < startStations.Length; i++)
+                {
+                    Container.Instance.Resolve<TransportOrderService>().Create(new TransportOrder()
+                    {
+                        StartStation = startStations[i],
+                        EndStation = endStations[i],
+                        AttachedFile = "第" + (i + 1) + "个附件",
+                        CreateDate = DateTime.Now.AddDays(i),
+                        Creator = Container.Instance.Resolve<SysUserService>().GetEntity(2),
+                        Customer = Container.Instance.Resolve<ClientService>().GetEntity(i % 4 + 1),
+                        CustomerRemark = "托运人记载事项" + (i + 1),
+                        TransportRemark = "运输备注" + (i + 1),
+                        DeliveryType = Container.Instance.Resolve<DeliveryTypeService>().GetEntity(i % 3 + 1),
+                        Price = Math.Round(new Random().NextDouble() * 100, 2),
+                        Receiver = Container.Instance.Resolve<ClientService>().GetEntity(new Random().Next(1, 5)),
+                        StartPlace = startPlace[i],
+                        EndPlace = endPlace[i],
+                        Province = Container.Instance.Resolve<ProvinceService>().GetEntity(i % 3 + 1),
+                        TransportOrderItemList = null,
+                    });
+                }
+
+                Response.Write(".........初始化货运单ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化货运单Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化货运单项
+        private void InitTransportOrderItem()
+        {
+            try
+            {
+                Response.Write(".........初始化货运单项<br/>");
+
+                string[] cabinetTypes = { "20英寸", "30英寸", "40英寸", "50英寸", "60英寸", "70英寸" };
+
+                for (int i = 0; i < 12; i++)
+                {
+                    Container.Instance.Resolve<TransportOrderItemService>().Create(new TransportOrderItem()
+                    {
+                        CabinetType = cabinetTypes[i % 5 + 1],
+                        CabinetSort = "干货箱" + (i + 1),
+                        Amount = new Random().Next(0, 100),
+                        CabinetNumber = ((i + 1) * 1000).ToString(),
+                        CargoName = "货物品" + (i + 1),
+                        SealedNumber = new Random().Next(9999, 100000).ToString(),
+                        TransportFee = Math.Round(new Random().NextDouble() * 1000, 2),
+                        TransportOrder = Container.Instance.Resolve<TransportOrderService>().GetEntity(i + 1),
+                    });
+                }
+
+                Response.Write(".........初始化货运单项ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化货运单项Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化省市
+        private void InitProvince()
+        {
+            try
+            {
+                Response.Write(".........初始化省市<br/>");
+
+                string[] names = { "重庆", "云南", "四川", "上海" };
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<ProvinceService>().Create(new Province
+                    {
+                        Name = names[i],
+                        SortCode = 10 * (i + 1)
+                    });
+                }
+
+                Response.Write(".........初始化省市ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化省市Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化客户
+        private void InitClient()
+        {
+            try
+            {
+                Response.Write(".........初始化客户<br/>");
+
+                // 添加五个以上的客户
+                string[] names = { "客户A", "客户B", "客户C", "客户D", "客户E", "客户F" };
+                string[] telephones = { "15098442556", "15091442456", "12091442551", "15098242556", "15192442556", "15192445557" };
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<ClientService>().Create(new Client
+                    {
+                        Name = names[i],
+                        Telephone = telephones[i]
+                    });
+
+                }
+
+                Response.Write(".........初始化客户ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化客户Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化运输方式
+        private void InitDeliverType()
+        {
+            try
+            {
+                Response.Write(".........初始化运输方式<br/>");
+
+                // 站到站
+                // 站到门
+                // 门到站
+                // 门到门
+                string[] names = { "站到站", "站到门", "门到站", "门到门" };
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<DeliveryTypeService>().Create(new DeliveryType
+                    {
+                        Name = names[i],
+                        SortCode = 10 * (i + 1)
+                    });
+                }
+
+                Response.Write(".........初始化运输方式ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化运输方式Error<br/>");
+            }
+        }
+        #endregion
 
         #region 初始化学生
         private void InitStudent()

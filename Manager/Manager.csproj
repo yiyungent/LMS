@@ -47,12 +47,17 @@
   <ItemGroup>
     <Compile Include="BaseManager.cs" />
     <Compile Include="ClazzManager.cs" />
+    <Compile Include="ClientManager.cs" />
+    <Compile Include="DeliveryTypeManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvinceManger.cs" />
     <Compile Include="StudentManager.cs" />
     <Compile Include="SysFunctionManager.cs" />
     <Compile Include="SysMenuManger.cs" />
     <Compile Include="SysRoleManager.cs" />
     <Compile Include="SysUserManager.cs" />
+    <Compile Include="TransportOrderItemManager.cs" />
+    <Compile Include="TransportOrderManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">

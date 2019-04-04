@@ -47,12 +47,17 @@
   <ItemGroup>
     <Compile Include="BaseService.cs" />
     <Compile Include="ClazzService.cs" />
+    <Compile Include="ClientService.cs" />
+    <Compile Include="DeliveryTypeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvinceService.cs" />
     <Compile Include="StudentService.cs" />
     <Compile Include="SysFunctionService.cs" />
     <Compile Include="SysMenuService.cs" />
     <Compile Include="SysRoleService.cs" />
     <Compile Include="SysUserService.cs" />
+    <Compile Include="TransportOrderItemService.cs" />
+    <Compile Include="TransportOrderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">

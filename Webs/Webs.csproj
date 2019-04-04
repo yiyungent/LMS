@@ -174,6 +174,7 @@
     <Compile Include="Controllers\SysRoleController.cs" />
     <Compile Include="Controllers\SysUserController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\TransportOrderController.cs" />
     <Compile Include="Extensions\HtmlHelperExtRBL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -487,6 +488,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SysUser\ChangePWD.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TransportOrder\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
