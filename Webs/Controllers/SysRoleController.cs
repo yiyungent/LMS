@@ -35,7 +35,10 @@ namespace Webs.Controllers
                 // 将查询条件存入 Session
                 Session["role_qryName"] = qryName;
             }
-            qryWhere.Add(Expression.Like("Name", qryName, MatchMode.Anywhere));
+            if (qryName.Length > 0)
+            {
+                qryWhere.Add(Expression.Like("Name", qryName, MatchMode.Anywhere));
+            }
             // 2.获取数据
             IList<SysRole> lst = Container.Instance.Resolve<SysRoleService>().Query(qryWhere);
             ViewBag.qryName = qryName;

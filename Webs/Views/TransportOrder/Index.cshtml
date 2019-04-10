@@ -22,7 +22,7 @@
             title: "新增",
             shade: 0.4,
             shadeClose: false,
-            area: ['500px', '300px'],
+            area: ['1300px', '600px'],
             content: ['/TransportOrder/Create', 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
                 //location.href = location.href; // 刷新页面
@@ -37,7 +37,7 @@
             title: "修改",
             shade: 0.4,
             shadeClose: false,
-            area: ['500px', '300px'],
+            area: ['1300px', '600px'],
             content: ['/TransportOrder/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
             end: function () {
                 //location.href = location.href; // 刷新页面
@@ -52,7 +52,7 @@
             title: "查看",
             shade: 0.4,
             shadeClose: false,
-            area: ['500px', '300px'],
+            area: ['1300px', '600px'],
             content: ['/TransportOrder/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
         });
     }
@@ -91,8 +91,9 @@
     @Html.TextBox("startStation_QryName", (string)ViewBag.startStation_QryName, new { placeholder = "货运起始站模糊查找" })
     <label>货运到站:</label>
     @Html.TextBox("endStation_QryName", (string)ViewBag.endStation_QryName, new { placeholder = "货运到站模糊查找" })
-    <label>收货人名字:</label>
-    @Html.TextBox("receiverName_QryName", (string)ViewBag.receiverName_QryName, new { placeholder = "收货人名字模糊查找" })
+    @*<label>收货人名字:</label>
+    @Html.TextBox("receiverName_QryName", (string)ViewBag.receiverName_QryName, new { placeholder = "收货人名字模糊查找" })*@
+    @Html.TextBox("qryName", (string)ViewBag.qryName, new { placeholder = "托运人或收货人模糊查找" })
     <input type="submit" value="查询" class="btn2" />
 }
 <table class="dataGrid">

@@ -131,8 +131,9 @@ namespace Domain
         /// <summary>
         /// 托运单明细
         ///     一对多
+        ///     级联操作明细表
         /// </summary>
-        [HasMany(ColumnKey = "TransportOrderId")]
+        [HasMany(ColumnKey = "TransportOrderId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<TransportOrderItem> TransportOrderItemList { get; set; }
     }
 }
