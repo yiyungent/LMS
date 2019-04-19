@@ -1,0 +1,149 @@
+﻿@using PagedList.Mvc
+@using Domain
+@model PagedList.PagedList<Domain.TransportOrder>
+
+@{
+    ViewBag.Title = "Index";
+    IList<SysFunction> authFunctionList = (IList<SysFunction>)ViewBag.authFunctionList;
+    var funcNames = from m in authFunctionList select m.Name;
+}
+<link href="~/css/PagedList.css" rel="stylesheet" />
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<link href="~/js/layer/theme/default/layer.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onAdd(transportOrderId) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "调度",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['800px', '500px'],
+            content: ['/DeliveryForm/Create?transportOrderId=' + transportOrderId, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                //location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onEdit(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "修改",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['800px', '500px'],
+            content: ['/DeliveryForm/Edit?transportOrderId=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                //location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onDetails(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "查看",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['800px', '500px'],
+            content: ['/DeliveryForm/Details?transportOrderId=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+        });
+    }
+</script>
+<h2 style="text-align: center;">可调度的托运单列表</h2>
+
+
+<table class="dataGrid">
+    <tr>
+        <th>
+            发货发站
+        </th>
+        <th>
+            收货到站
+        </th>
+        <th>
+            发货地点
+        </th>
+        <th>
+            交货地点
+        </th>
+        <th>
+            托运人名称
+        </th>
+        <th>
+            托运人电话
+        </th>
+        <th>
+            收货人名称
+        </th>
+        <th>
+            收货人名称
+        </th>
+        <th>
+            状态
+        </th>
+        <th>操作</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartStation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndStation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartPlace)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndPlace)
+            </td>
+            <td>
+                @(item.Customer == null ? "" : item.Customer.Name)
+            </td>
+            <td>
+                @(item.Customer == null ? "" : item.Customer.Telephone)
+            </td>
+            <td>
+                @(item.Receiver == null ? "" : item.Receiver.Name)
+            </td>
+            <td>
+                @(item.Receiver == null ? "" : item.Receiver.Telephone)
+            </td>
+            <td>
+                @(item.Status == 0 ? "待调度" : "待运输")
+            </td>
+            <td>
+                @if (item.Status == 0)
+                {
+                    <input type="button" value="调度" class="btn2" onclick="onAdd(@item.ID)" />
+                }
+                @if (item.Status == 1)
+                {
+                    <input type="button" value="重新调度" class="btn2" onclick="onEdit(@item.ID)" />
+                    <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager(Model, pageIndex => Url.Action("Index", new { pageIndex }), new PagedListRenderOptions
+{
+    LinkToFirstPageFormat = "首页",
+    LinkToLastPageFormat = "末页",
+    LinkToPreviousPageFormat = "上一页",
+    LinkToNextPageFormat = "下一页",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayItemSliceAndTotal = true,
+    ItemSliceAndTotalFormat = "第{0}到{1}行, 共{2}行"
+})

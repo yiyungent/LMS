@@ -45,10 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AchievementService.cs" />
     <Compile Include="BaseService.cs" />
+    <Compile Include="BillingItemService.cs" />
+    <Compile Include="BillingItemTypeService.cs" />
+    <Compile Include="BillingService.cs" />
     <Compile Include="ClazzService.cs" />
     <Compile Include="ClientService.cs" />
+    <Compile Include="DeliveryFormService.cs" />
     <Compile Include="DeliveryTypeService.cs" />
+    <Compile Include="DriverService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinceService.cs" />
     <Compile Include="StudentService.cs" />
@@ -58,6 +64,7 @@
     <Compile Include="SysUserService.cs" />
     <Compile Include="TransportOrderItemService.cs" />
     <Compile Include="TransportOrderService.cs" />
+    <Compile Include="VehicleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">

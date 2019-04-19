@@ -86,7 +86,100 @@ namespace Webs.Controllers
             InitProvince();
             InitTransportOrder();
             InitTransportOrderItem();
+            InitDriver();
+            InitVehicle();
+
+            InitBillingItemType();
         }
+
+        #region 初始化报销费用类型
+        private void InitBillingItemType()
+        {
+            try
+            {
+                Response.Write(".........初始化报销费用类型<br/>");
+
+                string[] names = { "加油费", "路桥费", "停车费", "车辆维护费", "其他" };
+                for (int i = 0; i < 5; i++)
+                {
+                    Container.Instance.Resolve<BillingItemTypeService>().Create(new BillingItemType()
+                    {
+                        Name = names[i],
+                        SortCode = 10 * (i + 1)
+                    });
+                }
+
+                Response.Write(".........初始化报销费用类型ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化报销费用类型Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化司机
+        private void InitDriver()
+        {
+            try
+            {
+                Response.Write(".........初始化司机<br/>");
+
+                string[] names = { "张三", "李四", "王五", "赵六", "琉璃" };
+                for (int i = 0; i < 5; i++)
+                {
+                    Container.Instance.Resolve<DriverService>().Create(new Driver()
+                    {
+                        Name = names[i],
+                        Status = 0,
+                        Telephone = string.Format("1234567{0:000}", i),
+                        SysUser = Container.Instance.Resolve<SysUserService>().GetEntity(40 + i),
+                    });
+                }
+
+                Response.Write(".........初始化司机ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化司机Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化卡车
+        private void InitVehicle()
+        {
+            try
+            {
+                Response.Write(".........初始化卡车<br/>");
+
+                for (int i = 1; i <= 5; i++)
+                {
+                    Container.Instance.Resolve<VehicleService>().Create(new Vehicle()
+                    {
+                        VehicleNumber = string.Format("渝A QQ2 {0}1", i),
+                        DeptName = "重庆顺丰物流公司" + (i + 1),
+                        VehicleType = "东风",
+                        LoadCount = 30,
+                        EmptyUseOil = 10,
+                        Status = 0,
+                        ChassisNumber = "底盘号" + string.Format("3000{0}", i + 1),
+                        DepreciateRate = decimal.Parse((new Random().NextDouble()).ToString()),
+                        FrameNumber = "4000" + (i + 1),
+                        GenerateNumber = "发动机号5000" + (i + 1),
+                        InsuranceNumber = "保单号2000" + (i + 1),
+                        LoadUseOil = decimal.Parse((new Random().NextDouble() * 10).ToString()),
+                    });
+                }
+
+                Response.Write(".........初始化卡车ok<br/>");
+            }
+            catch (Exception ex)
+            {
+                Response.Write(".........初始化货车Error<br/>");
+            }
+        }
+        #endregion
 
         #region 初始化货运单
         private void InitTransportOrder()

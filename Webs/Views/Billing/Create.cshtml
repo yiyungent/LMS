@@ -1,0 +1,99 @@
+﻿@using Domain
+
+@model Billing
+
+@{
+    ViewBag.Title = "Create";
+    int detailRowIndex = 0;
+    
+    // 报销费用类型
+    IList<BillingItemType> allBillingItemType =  ViewBag.allBillingItemType;
+    string bit_names = string.Join("|", from m in allBillingItemType
+                                 orderby m.SortCode
+                                 select m.Name);
+    string bit_ids = string.Join("|", from m in allBillingItemType
+                                     orderby m.SortCode
+                                     select m.ID);
+}
+<link href="~/js/layer/theme/default/layer.css" rel="stylesheet" />
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onSubmit() {
+        $.ajax({
+            type: "post",
+            url: "/Billing/Create",
+            data: $("form").serialize(), // 文件上传取不到
+            dataType: "text",
+            success: function (rdata) {
+                if (rdata == "ok") {
+                    // 提交成功
+                    // 刷新列表
+                    parent.location.reload();
+                    // 关闭弹出层
+                    parent.layer.close(parent.layer.index);
+                } else {
+                    // 提交失败
+                    alert(rdata);
+                }
+            }
+        });
+    }
+
+    function onCancel() {
+        parent.layer.close(parent.layer.index);
+    }
+</script>
+
+<div style="text-align: center">
+    <input type="button" value="保存" onclick="onSubmit()" />
+    <input type="button" value="取消" onclick="onCancel()" />
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Creator.ID)
+    @Html.Hidden("bit_names", bit_names)
+    @Html.Hidden("bit_ids", bit_ids)
+    <div>主表</div>
+    
+    <div>从表</div>
+    <input type="button" value="增加" onclick="onAdd()" />
+    <table>
+        <tr>
+            <td>费用类型</td>
+            <td>费用</td>
+            <td>备注</td>
+            <td>操作</td>
+        </tr>
+        @foreach (var item in Model.BillingItemList)
+	    {
+            string[] arrBitIds = bit_ids.Split('|');
+            string[] arrBitNames = bit_names.Split('|');
+            detailRowIndex = detailRowIndex + 1;
+            string trid = "tr" + detailRowIndex;
+            string bitid = "BillingItemType" + detailRowIndex;
+            <tr id="@trid">
+                <td>
+                    <select id="@bitid" name="@bitid">
+                        @for (int i = 0; i < arrBitIds.Length; i++)
+                        {
+                            string strSelected = item.ID.ToString() == arrBitIds[i] ? "selected='selected'" : "";
+                            <option value="@arrBitIds[i]" @strSelected>@arrBitNames[i]</option>
+                        }
+                    </select>
+                </td>
+                <td>费用类型</td>
+                <td>@Html.TextBox("Fee" + detailRowIndex, item.Fee)</td>
+                <td>@Html.TextBox("Remark" + detailRowIndex, item.Remark)</td>
+                <td>
+                    <input type="button" value="删除" onclick="onDelRow(@detailRowIndex)" />
+                </td>
+            </tr>
+	    }
+    </table>
+    
+    @Html.Hidden("detailRowCount", detailRowIndex)
+}

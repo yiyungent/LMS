@@ -1,0 +1,163 @@
+﻿@using PagedList.Mvc
+@using Domain
+@model PagedList.PagedList<Billing>
+
+@{
+    ViewBag.Title = "Index";
+    IList<SysFunction> authFunctionList = (IList<SysFunction>)ViewBag.authFunctionList;
+    var funcNames = from m in authFunctionList select m.Name;
+}
+<link href="~/css/PagedList.css" rel="stylesheet" />
+<link href="~/js/My97DatePicker/skin/default/datepicker.css" rel="stylesheet" />
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<link href="~/js/layer/theme/default/layer.css" rel="stylesheet" />
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script src="~/js/My97DatePicker/WdatePicker.js"></script>
+<script>
+    function onAdd() {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "新增",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '300px'],
+            content: ['/Billing/Create', 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                //location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onEdit(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "修改",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '300px'],
+            content: ['/Billing/Edit?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+            end: function () {
+                //location.href = location.href; // 刷新页面
+            }
+        });
+    }
+    function onDetails(id) {
+        layer.open({
+            type: 2,
+            closeBtn: 0,
+            anim: 4,
+            title: "查看",
+            shade: 0.4,
+            shadeClose: false,
+            area: ['500px', '300px'],
+            content: ['/Billing/Details?id=' + id, 'yes'], // iframe的url，yes代表显示滚动条
+        });
+    }
+    function onDelete(id) {
+        if (confirm('您确认要删除吗？')) {
+            // 删除
+            $.ajax({
+                type: "post",
+                url: "/Billing/Delete",
+                data: { id: id },
+                dataType: "text",
+                success: function (rdata) {
+                    if (rdata == "ok") {
+                        // 提交成功
+                        // 刷新列表
+                        location.href = location.href;
+                    } else {
+                        // 提交失败
+                        //alert(rdata);
+                        layer.msg(rdata);
+                    }
+                }
+            });
+        }
+    }
+</script>
+<h2 style="text-align: center;">报销单列表</h2>
+@using (Html.BeginForm())
+{
+    if (funcNames.Contains("新增"))
+    {
+        <input type="button" value="新增" class="btn2" onclick="onAdd()" />
+    }
+    <label for="qryDriverId">司机：</label>
+    @Html.DropDownList("qryDriverId", (IList<SelectListItem>)ViewBag.ddlDriver)
+    <label for="qryStartDate">报销时间：</label>
+    @Html.TextBox("qryStartDate", (string)ViewBag.qryStartDate, new { @class = "Wdate", onfocus = "WdatePicker({dataFmt: 'yyyy-MM-dd', readOnly: true})" })
+    <label for="qryEndDate">到</label>
+    @Html.TextBox("qryEndDate", (string)ViewBag.qryEndDate, new { @class = "Wdate", onfocus = "WdatePicker({dataFmt: 'yyyy-MM-dd', readOnly: true})" })
+
+
+    <input type="submit" value="查询" class="btn2" />
+}
+<table class="dataGrid">
+    <tr>
+        <th>
+            送货人员
+        </th>
+        <th>
+            送货时间
+        </th>
+        <th>
+            报销时间
+        </th>
+        <th>
+            创建人
+        </th>
+        <th>操作</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.DeliveryForm != null && item.DeliveryForm.Driver != null)
+                {
+                    <span>@item.DeliveryForm.Driver.Name</span>
+                }
+            </td>
+            <td>
+                @(item.DeliveryForm == null ? "" : item.DeliveryForm.TransportDate.ToString("yyyy-MM-dd"))
+            </td>
+            <td>
+                @item.CreateDate.ToString("yyyy年MM月dd日 hh:mm:ss")
+            </td>
+            <td>
+                @(item.Creator == null ? "" : item.Creator.Name)
+            </td>
+            <td>
+                @if (funcNames.Contains("修改"))
+                {
+                    <input type="button" value="修改" class="btn2" onclick="onEdit(@item.ID)" />
+                }
+                @if (funcNames.Contains("查看"))
+                {
+                    <input type="button" value="查看" class="btn2" onclick="onDetails(@item.ID)" />
+                }
+                @if (funcNames.Contains("删除"))
+                {
+                    <input type="button" value="删除" class="btn2" onclick="onDelete(@item.ID)" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager(Model, pageIndex => Url.Action("Index", new { pageIndex }), new PagedListRenderOptions
+{
+    LinkToFirstPageFormat = "首页",
+    LinkToLastPageFormat = "末页",
+    LinkToPreviousPageFormat = "上一页",
+    LinkToNextPageFormat = "下一页",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayItemSliceAndTotal = true,
+    ItemSliceAndTotalFormat = "第{0}到{1}行, 共{2}行"
+})

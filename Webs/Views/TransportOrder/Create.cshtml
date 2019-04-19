@@ -1,0 +1,237 @@
+﻿@model Domain.TransportOrder
+
+@{
+    ViewBag.Title = "Edit";
+    IList<SelectListItem> allDeliveryType = (IList<SelectListItem>)ViewBag.rblDeliverType;
+    int detailIndex = 0; // 明细行行号
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<style>
+    #mainTbl {
+        background-color: #0094ff;
+        width: 100%;
+        border: 0;
+    }
+
+    .mainTr {
+        background-color: #ffffff;
+    }
+
+    .w30 {
+        width: 40px;
+    }
+</style>
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script>
+    function onSubmit() {
+        // 2.提交数据
+        $.ajax({
+            type: "post",
+            url: "/TransportOrder/Create",
+            data: $("form").serialize(),
+            dataType: "text",
+            success: function (rdata) {
+                if (rdata == "ok") {
+                    // 提交成功
+                    // 3.关闭弹窗
+                    window.parent.location.reload();
+                    parent.layer.close(parent.layer.index);
+                } else {
+                    // 提交失败
+                    alert(rdata);
+                    //layer.msg(rdata);
+                }
+            }
+        });
+        // 3.关闭弹窗
+    }
+    function onCancel() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+
+    // 删除明细行
+    function delRow(index) {
+        $("#tr" + index).remove();
+    }
+    // 增加明细行
+    function addRow() {
+        // 1.处理行数
+        // 1.1 获取原行号
+        var detailRowCount = $("#detailRowCount").val();
+        // 1.2 自增1
+        detailRowCount = Number(detailRowCount) + 1;
+        // 1.3 更新隐藏域
+        $("#detailRowCount").val(detailRowCount);
+        // 2. 追加行
+        var strHtml = "<tr id='tr" + detailRowCount + "'>";
+        strHtml = strHtml + "<td><input type='text' id='CargoName'" + detailRowCount + " name='CargoName'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='text' id='CabinetSort'" + detailRowCount + " name='CabinetSort'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='text' id='CabinetType'" + detailRowCount + " name='CabinetType'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='text' id='Amount'" + detailRowCount + " name='Amount'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='text' id='CabinetNumber'" + detailRowCount + " name='CabinetNumber'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='text' id='SealedNumber'" + detailRowCount + " name='SealedNumber'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='text' id='TransportFee'" + detailRowCount + " name='TransportFee'" + detailRowCount + " /></td>";
+        strHtml = strHtml + "<td><input type='button' class='btn2' value='删除' onclick='delRow(" + detailRowCount + ")' /></td>";
+
+        @*
+            <td>@Html.TextBox("CabinetSort" + detailIndex, item.CabinetSort)</td>
+            <td>@Html.TextBox("CabinetType" + detailIndex, item.CabinetType)</td>
+            <td>@Html.TextBox("Amount" + detailIndex, item.Amount)</td>
+            <td>@Html.TextBox("CabinetNumber" + detailIndex, item.CabinetNumber)</td>
+            <td>@Html.TextBox("SealedNumber" + detailIndex, item.SealedNumber)</td>
+            <td>@Html.TextBox("TransportFee" + detailIndex, item.TransportFee)</td>
+            <td>
+                @Html.Hidden("ID", detailIndex, item.ID)
+                <input type="button" class="btn2" value="删除" onclick="delRow(@detailIndex)" />
+            </td>*@
+
+        strHtml = strHtml + "</tr>"
+        $("#detailTbl").append(strHtml);
+
+    }
+
+    // 托运人或收货人改变事件
+    function onClientChange(obj) {
+        var selectedId = $("#" + obj + "_ID").val();
+        if (selectedId == "0") {
+            // 请选择
+            $("#" + obj + "_Telephone").val("");
+            $("#" + obj + "_Address").val("");
+            $("#" + obj + "_EMail").val("");
+        } else {
+            // 获取隐藏域中存放的全部客户的信息（字符串格式）
+            var allClient = $("#allClientInfo").val();
+            // 拆分客户
+            var arrClient = allClient.split("$");
+            // 关于客户循环
+            for (var i = 0; i < allClient.length; i++) {
+                // 按客户属性拆分
+                var arrData = arrClient[i].split("|");
+                // 查找到当前选中的客户
+                if (arrData[0] == selectedId) {
+                    // 更新页面显示
+                    $("#" + obj + "_Telephone").val(arrData[1]);
+                    $("#" + obj + "_Address").val(arrData[2]);
+                    $("#" + obj + "_EMail").val(arrData[3]);
+                    break;
+                }
+            }
+        }
+    }
+</script>
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="保存" onclick="onSubmit()" />
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.Hidden("allClientInfo", (string)ViewBag.allClientInfo)
+    @Html.Hidden("detailRowCount", Model.TransportOrderItemList.Count)
+
+    <table id="mainTbl">
+        <tr class="mainTr">
+            <td width="70">发站：</td>
+            <td width="200">@Html.TextBoxFor(model => model.StartStation, new { @style = "width:200px" })</td>
+            <td>到站：</td>
+            <td width="200">@Html.TextBoxFor(model => model.EndStation, new { @style = "width:200px;" })</td>
+            <td>到站所属城市：</td>
+            <td width="200">@Html.DropDownList("Province.ID", (IList<SelectListItem>)ViewBag.ddlProvince, new { @style = "width:200px;" })</td>
+            <td rowspan="8">运输方式</td>
+            <td rowspan="8">
+                @foreach (var item in allDeliveryType)
+                {
+                    string str = item.Selected ? " checked='checked'" : "";
+                    <input type="radio" name="DeliveryType.ID" value="@item.Value" @str />@item.Text<br />
+                }
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>发货地点：</td>
+            <td>@Html.EditorFor(model => model.StartPlace, new { @style = "width:200px;" })</td>
+            <td>交货地点</td>
+            <td>@Html.TextBoxFor(model => model.EndPlace, new { @style = "width:200px;" })</td>
+            <td>货物价格</td>
+            <td>@Html.TextBoxFor(m => m.Price, new { @style = "width:200px;" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td rowspan="3">托运人</td>
+            <td>名称</td>
+            <td colspan="4">@Html.DropDownList("Customer.ID", (IList<SelectListItem>)ViewBag.ddlCustomer, new { @style = "width:765px;", onchange = "onClientChange('Customer')" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td>地址</td>
+            <td colspan="4">@Html.TextBoxFor(m => m.Customer.Address, new { @style = "width:765px;", @readonly = "readonly" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td>电话</td>
+            <td width="200">@Html.TextBoxFor(m => m.Customer.Telephone, new { @style = "width:200px;", @readonly = "readonly" })</td>
+            <td>E-mail</td>
+            <td colspan="2">@Html.TextBoxFor(m => m.Customer.Email, new { @style = "width:358px;", @readonly = "readonly" })</td>
+        </tr>
+        <tr class="mainTr"></tr>
+        <tr class="mainTr">
+            <td rowspan="3">收货人</td>
+            <td>名称</td>
+            <td colspan="4">@Html.DropDownList("Receiver.ID", (IList<SelectListItem>)ViewBag.ddlReceiver, new { @style = "width:765px;", onchange = "onClientChange('Receiver')" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td>地址</td>
+            <td colspan="4">@Html.TextBoxFor(m => m.Receiver.Address, new { @style = "width:765px;" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td>电话</td>
+            <td>@Html.TextBoxFor(m => m.Receiver.Telephone, new { @style = "width:200px;", @readonly = "readonly" })</td>
+            <td>E-mail</td>
+            <td colspan="2">@Html.TextBoxFor(m => m.Receiver.Email, new { @style = "width:358px;", @readonly = "readonly" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td>托运人记载事项</td>
+            <td>@Html.TextAreaFor(m => m.CustomerRemark, new { @style = "width:200px;", rows = "5" })</td>
+            <td>承运人记载事项</td>
+            <td>@Html.TextAreaFor(m => m.TransportRemark, new { @style = "width:200px;", rows = "5" })</td>
+            <td>附件</td>
+            <td colspan="3">@Html.TextAreaFor(m => m.AttachedFile, new { @style = "width:390px;", rows = "5" })</td>
+        </tr>
+    </table>
+
+    <input type="button" class="btn2" value="新增" onclick="addRow()" />
+    <table id="detailTbl" class="dataGrid">
+        <tr>
+            <th>货物品名</th>
+            <th>集装箱箱型</th>
+            <th>集装箱箱类</th>
+            <th>集装箱数量</th>
+            <th>集装箱号码</th>
+            <th>施封号码</th>
+            <th>运输费用</th>
+            <th>操作</th>
+        </tr>
+        @foreach (var item in Model.TransportOrderItemList)
+        {
+            detailIndex = detailIndex + 1;
+            string trId = "tr" + detailIndex;
+            <tr id="@trId">
+                <td>@Html.TextBox("CargoName" + detailIndex, item.CargoName)</td>
+                <td>@Html.TextBox("CabinetSort" + detailIndex, item.CabinetSort)</td>
+                <td>@Html.TextBox("CabinetType" + detailIndex, item.CabinetType)</td>
+                <td>@Html.TextBox("Amount" + detailIndex, item.Amount)</td>
+                <td>@Html.TextBox("CabinetNumber" + detailIndex, item.CabinetNumber)</td>
+                <td>@Html.TextBox("SealedNumber" + detailIndex, item.SealedNumber)</td>
+                <td>@Html.TextBox("TransportFee" + detailIndex, item.TransportFee)</td>
+                <td>
+                    @Html.Hidden("ID", detailIndex, item.ID)
+                    <input type="button" class="btn2" value="删除" onclick="delRow(@detailIndex)" />
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+
+

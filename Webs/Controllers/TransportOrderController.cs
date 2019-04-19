@@ -132,8 +132,9 @@ namespace Webs.Controllers
             ViewBag.authFunctionList = GetAuthForMenu("TransportOrder", "Index");
 
             return View(lst.ToPagedList(pageIndex, 10)); // 强类型视图
-        }
             #endregion
+        }
+        #endregion
 
         #region 修改
         [HttpGet]
@@ -141,6 +142,7 @@ namespace Webs.Controllers
         {
             // 1.准备实体
             TransportOrder mo = Container.Instance.Resolve<TransportOrderService>().GetEntity(id);
+            mo.TransportOrderItemList = mo.TransportOrderItemList ?? new List<TransportOrderItem>();
             // 2.返回视图前预处理
             // 2.1 省市
             int provinceId = mo.Province == null ? 0 : mo.Province.ID;
@@ -199,6 +201,7 @@ namespace Webs.Controllers
                     toi.TransportFee = double.Parse(Request["TransportFee" + i]);
 
                     // 添加到明细列表
+                    toi.TransportOrder = mo;
                     mo.TransportOrderItemList.Add(toi);
                 }
                 // 1.2 创建人
@@ -208,6 +211,8 @@ namespace Webs.Controllers
                 }
                 // 1.3 创建时间
                 mo.CreateDate = DateTime.Now;
+                // 1.4 状态
+                mo.Status = 0;
                 // 提交主表, 级联提交明细表
                 Container.Instance.Resolve<TransportOrderService>().Edit(mo);
 
@@ -220,6 +225,93 @@ namespace Webs.Controllers
         }
         #endregion
 
+        #region 新增
+        [HttpGet]
+        public ActionResult Create()
+        {
+            // 1.准备实体
+            TransportOrder mo = new TransportOrder();
+            mo.TransportOrderItemList = mo.TransportOrderItemList ?? new List<TransportOrderItem>();
+            // 2.返回视图前预处理
+            // 2.1 省市
+            int provinceId = mo.Province == null ? 0 : mo.Province.ID;
+            ViewBag.ddlProvince = InitDDLForProvince(provinceId);
+            // 2.2 运输方式 DeliverType
+            int deliverTypeId = mo.DeliveryType == null ? 0 : mo.DeliveryType.ID;
+            ViewBag.rblDeliverType = InitRBLForDeliverType(deliverTypeId);
+            // 2.3 托运人
+            int customerId = mo.Customer == null ? 0 : mo.Customer.ID;
+            ViewBag.ddlCustomer = InitDDLForCustomer(customerId);
+            // 2.4 收货人
+            int receiverId = mo.Receiver == null ? 0 : mo.Receiver.ID;
+            ViewBag.ddlReceiver = InitDDLForCustomer(receiverId);
+            // 2.5 状态
+            ViewBag.ddlStatus = InitDDLForStatus(mo.Status);
+            // 2.6 全部客户信息
+            ViewBag.allClientInfo = InitStrForClient();
+
+            // 3.返回视图
+            return View(mo);
+        }
+
+        [HttpPost]
+        public string Create(TransportOrder mo)
+        {
+            try
+            {
+                // 1.1 明细表
+                // 提交前预处理
+                mo.TransportOrderItemList = new List<TransportOrderItem>();
+                // 明细行最大行数
+                int detailRowCount = int.Parse(Request["detailRowCount"]);
+
+                TransportOrderItem toi = new TransportOrderItem();
+                for (int i = 1; i <= detailRowCount; i++)
+                {
+                    // 根据货物名称判断是否被删除
+                    if (Request["CargoName" + i] == null) continue;
+
+                    if (Request["ID" + i] == null)
+                    {
+                        // 新增行
+                    }
+                    else
+                    {
+                        // 原有行
+                        toi.ID = int.Parse(Request["ID" + i]);
+                    }
+                    toi.CargoName = Request["CargoName" + i];
+                    toi.CabinetSort = Request["CabinetSort" + i];
+                    toi.CabinetType = Request["CabinetType" + i];
+                    toi.Amount = int.Parse(Request["Amount" + i]);
+                    toi.CabinetNumber = Request["CabinetNumber" + i];
+                    toi.SealedNumber = Request["SealedNumber" + i];
+                    toi.TransportFee = double.Parse(Request["TransportFee" + i]);
+
+                    // 添加到明细列表
+                    toi.TransportOrder = mo;
+                    mo.TransportOrderItemList.Add(toi);
+                }
+                // 1.2 创建人
+                if (Session["loginUser"] != null)
+                {
+                    mo.Creator = (SysUser)Session["loginUser"];
+                }
+                // 1.3 创建时间
+                mo.CreateDate = DateTime.Now;
+                // 1.4 状态
+                mo.Status = 0;
+                // 提交主表, 级联提交明细表
+                Container.Instance.Resolve<TransportOrderService>().Create(mo);
+
+                return "ok";
+            }
+            catch (Exception exp)
+            {
+                return exp.Message;
+            }
+        }
+        #endregion
 
         #region 辅助方式
         /// <summary>
@@ -365,6 +457,6 @@ namespace Webs.Controllers
             return ret;
         }
         #endregion
-
     }
+
 }

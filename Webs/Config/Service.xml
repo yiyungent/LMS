@@ -45,5 +45,33 @@
                service="Service.TransportOrderItemService,Service"
                type="Component.TransportOrderItemComponent,Component"
                isTransactional="true" />
+    <component id="DeliveryFormService"
+               service="Service.DeliveryFormService,Service"
+               type="Component.DeliveryFormComponent,Component"
+               isTransactional="true" />
+    <component id="DriverService"
+               service="Service.DriverService,Service"
+               type="Component.DriverComponent,Component"
+               isTransactional="true" />
+    <component id="VehicleService"
+               service="Service.VehicleService,Service"
+               type="Component.VehicleComponent,Component"
+               isTransactional="true" />
+    <component id="BillingService"
+               service="Service.BillingService,Service"
+               type="Component.BillingComponent,Component"
+               isTransactional="true" />
+    <component id="BillingItemService"
+               service="Service.BillingItemService,Service"
+               type="Component.BillingItemComponent,Component"
+               isTransactional="true" />
+    <component id="BillingItemTypeService"
+               service="Service.BillingItemTypeService,Service"
+               type="Component.BillingItemTypeComponent,Component"
+               isTransactional="true" />
+    <component id="AchievementService"
+               service="Service.AchievementService,Service"
+               type="Component.AchievementComponent,Component"
+               isTransactional="true" />
   </components>
 </configuration>

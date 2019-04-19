@@ -1,0 +1,172 @@
+﻿@model Domain.DeliveryForm
+@{
+    ViewBag.Title = "Create";
+    IList<SelectListItem> rblDeliveryType = (IList<SelectListItem>)ViewBag.rblDeliveryType;
+}
+<link href="~/css/ViewPage.css" rel="stylesheet" />
+<link href="~/js/My97DatePicker/skin/default/datepicker.css" rel="stylesheet" />
+<style>
+    #mainTbl {
+        background-color: #0094ff;
+        width: 100%;
+        border: 0;
+    }
+
+    .mainTr {
+        background-color: #ffffff;
+    }
+
+    .w30 {
+        width: 40px;
+    }
+</style>
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script src="~/js/jquery-migrate-1.1.1.js"></script>
+<script src="~/js/layer/layer.js"></script>
+<script src="~/js/My97DatePicker/WdatePicker.js"></script>
+<script src="~/js/jquery.jqprint.js"></script>
+<script>
+    function onCancel() {
+        // 关闭弹窗
+        parent.layer.close(parent.layer.index);
+    }
+
+    function onPrint() {
+        // 打印
+        $("#mainTbl").jqprint();
+    }
+
+    // 求字符串长度——汉字算2
+    function getByteLen(val) {
+        var len = 0;
+        for (var i = 0; i < val.length; i++) {
+            var a = val.charAt(i);
+            if (a.match(/[^\x00-\xff]/ig) != null) {
+                len += 2;
+            } else {
+                len += 1;
+            }
+        }
+        return len;
+    }
+</script>
+
+<div style="text-align: center;">
+    <input type="button" class="btn2" value="取消" onclick="onCancel()" />
+    <input type="button" value="打印" class="btn2" onclick="onPrint()">
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(m => m.TransportOrder.ID)
+
+    <table id="mainTbl">
+        <tr class="mainTr">
+            <td>送货人员：</td>
+            <td>@Html.DropDownList("Driver.ID", (IList<SelectListItem>)ViewBag.ddlDriver, new { disabled = "disabled" })</td>
+            <td>运输车辆：</td>
+            <td>@Html.DropDownList("Vehicle.ID", (IList<SelectListItem>)ViewBag.ddlVehicle, new { disabled = "disabled" })</td>
+            <td>送货时间：</td>
+            <td colspan="2">@Html.TextBoxFor(m => m.TransportDate, new { Value = Model.TransportDate == null ? "" : Model.TransportDate.ToString("yyyy-MM-dd"), @class = "Wdate", onfocus = "WdatePicker({dataFmt: 'yyyy-MM-dd', readOnly: true})", disabled = "disabled" })</td>
+        </tr>
+        <tr class="mainTr">
+            <td>发站：</td>
+            <td>
+                @(Model.TransportOrder == null ? "" : Model.TransportOrder.StartStation)
+            </td>
+            <td>到站：</td>
+            <td>
+                @(Model.TransportOrder == null ? "" : Model.TransportOrder.EndStation)
+            </td>
+            <td>到站所属省市：</td>
+            <td colspan="2">
+                @(Model.TransportOrder == null || Model.TransportOrder.Province == null ? "" : Model.TransportOrder.Province.Name)
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>发货地点</td>
+            <td>@(Model.TransportOrder == null ? "" : Model.TransportOrder.StartPlace)</td>
+            <td>交货地点</td>
+            <td>@(Model.TransportOrder == null ? "" : Model.TransportOrder.EndPlace)</td>
+            <td>货物价格</td>
+            <td>@(Model.TransportOrder == null ? "" : Model.TransportOrder.Price.ToString())</td>
+            <td>运输方式</td>
+        </tr>
+        <tr class="mainTr">
+            <td rowspan="3">托运人</td>
+            <td>名称</td>
+            <td colspan="4">
+                @(Model.TransportOrder == null || Model.TransportOrder.Customer == null ? "" : Model.TransportOrder.Customer.Name)
+            </td>
+            <td rowspan="6">
+                @foreach (var item in rblDeliveryType)
+                {
+                    string strChecked = item.Selected ? "checked='checked'" : "";
+                    <input type="radio" disabled name="DeliveryType.ID" value="@item.Value" @strChecked />@item.Text <br />
+                }
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>地址</td>
+            <td colspan="4">
+                @(Model.TransportOrder == null || Model.TransportOrder.Customer == null ? "" : Model.TransportOrder.Customer.Address)
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>电话</td>
+            <td>
+                @(Model.TransportOrder == null || Model.TransportOrder.Customer == null ? "" : Model.TransportOrder.Customer.Telephone)
+            </td>
+            <td>电子信箱</td>
+            <td colspan="2">
+                @(Model.TransportOrder == null || Model.TransportOrder.Customer == null ? "" : Model.TransportOrder.Customer.Email)
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td rowspan="3">收货人</td>
+            <td>名称</td>
+            <td colspan="4">
+                @(Model.TransportOrder == null || Model.TransportOrder.Receiver == null ? "" : Model.TransportOrder.Receiver.Name)
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>地址</td>
+            <td colspan="4">
+                @(Model.TransportOrder == null || Model.TransportOrder.Receiver == null ? "" : Model.TransportOrder.Receiver.Address)
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>电话</td>
+            <td>
+                @(Model.TransportOrder == null || Model.TransportOrder.Receiver == null ? "" : Model.TransportOrder.Receiver.Telephone)
+            </td>
+            <td>电子信箱</td>
+            <td colspan="2">
+                @(Model.TransportOrder == null || Model.TransportOrder.Receiver == null ? "" : Model.TransportOrder.Receiver.Email)
+            </td>
+        </tr>
+        <tr class="mainTr">
+            <td>货物品名</td>
+            <td>集装箱箱型</td>
+            <td>集装箱箱类</td>
+            <td>集装箱数量</td>
+            <td>集装箱号码</td>
+            <td>施封号码</td>
+            <td>运输费用</td>
+        </tr>
+        @foreach (var item in Model.TransportOrder.TransportOrderItemList)
+        {
+            <tr class="mainTr">
+                <td>@item.CargoName</td>
+                <td>@item.CabinetSort</td>
+                <td>@item.CabinetType</td>
+                <td>@item.Amount</td>
+                <td>@item.CabinetNumber</td>
+                <td>@item.SealedNumber</td>
+                <td>@item.TransportFee</td>
+            </tr>
+        }
+    </table>
+}
