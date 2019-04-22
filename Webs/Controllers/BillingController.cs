@@ -218,6 +218,11 @@ namespace Webs.Controllers
 
                 // 3. 提交主表（级联提交明细表）
                 Container.Instance.Resolve<BillingService>().Create(mo);
+                // 4. 更新托运单状态
+                DeliveryForm deliveryForm = Container.Instance.Resolve<DeliveryFormService>().GetEntity(mo.DeliveryForm.ID);
+                TransportOrder transportOrder = deliveryForm.TransportOrder;
+                transportOrder.Status = 3; // 已报账
+                Container.Instance.Resolve<TransportOrderService>().Edit(transportOrder);
 
                 return "ok";
             }
