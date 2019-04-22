@@ -45,11 +45,53 @@
     function onCancel() {
         parent.layer.close(parent.layer.index);
     }
+
+    function onAddRow() {
+        // 1. 确定新行号
+        var detailRowCount = $("#detailRowCount").val();
+        // Number 必须，否则是字符串相加，不是数字相加
+        detailRowCount = Number(detailRowCount) + 1;
+        // 2. 增加行
+        var strHtml = "<tr id='tr" + detailRowCount + "'>";
+
+        strHtml = strHtml + "<td>";
+        strHtml = strHtml + "<select id='BillingItemType" + detailRowCount + "' name='BillingItemType" + detailRowCount + "'>";
+        strHtml = strHtml + "<option value='0' checked='checked'>(请选择)</option>";
+        // 取出 names
+        var arrNames = $("#bit_names").val().split("|");
+        var arrIds = $("#bit_ids").val().split("|");
+        for (var i = 0; i < arrNames.length; i++) {
+            strHtml = strHtml + "<option value='" + arrIds[i] + "'>" + arrNames[i] + "</option>";
+        }
+        strHtml = strHtml + "</select>";
+        strHtml = strHtml + "</td>";
+        // 2.2 费用
+        strHtml = strHtml + "<td>";
+        strHtml = strHtml + "<input type='text' id='Fee" + detailRowCount + "' name='Fee" + detailRowCount + "' />";
+        strHtml = strHtml + "</td>";
+        // 2.3 备注
+        strHtml = strHtml + "<td>";
+        strHtml = strHtml + "<input type='text' id='Remark" + detailRowCount + "' name='Remark" + detailRowCount + "' />";
+        strHtml = strHtml + "</td>";
+        // 2.4 操作
+        strHtml = strHtml + "<td>";
+        strHtml = strHtml + "<input type='button' value='删除' class='btn2' onclick='onDelRow(" + detailRowCount + ")' />";
+        strHtml = strHtml + "</td>";
+
+        strHtml = strHtml + "</tr>";
+        $("#dtl").append(strHtml);
+        // 3. 重新隐藏域行数
+        $("#detailRowCount").val(detailRowCount);
+    }
+
+    function onDelRow(rowIndex) {
+        $("#tr" + rowIndex).remove();
+    }
 </script>
 
 <div style="text-align: center">
-    <input type="button" value="保存" onclick="onSubmit()" />
-    <input type="button" value="取消" onclick="onCancel()" />
+    <input class="btn2" type="button" value="保存" onclick="onSubmit()" />
+    <input class="btn2" type="button" value="取消" onclick="onCancel()" />
 </div>
 
 @using (Html.BeginForm())
@@ -57,11 +99,22 @@
     @Html.HiddenFor(m => m.Creator.ID)
     @Html.Hidden("bit_names", bit_names)
     @Html.Hidden("bit_ids", bit_ids)
-    <div>主表</div>
+    <fieldset>
+        <div class="editor-label">报账人</div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Creator.Name, new { @readonly = "readonly" })
+            @Html.HiddenFor(m => m.Creator.ID)
+        </div>
+
+        <div class="editor-label">调度单</div>
+        <div class="editor-field">
+            @Html.DropDownList("DeliveryForm.ID", (IList<SelectListItem>)ViewBag.ddlDeliveryForm)
+        </div>
+    </fieldset>
     
-    <div>从表</div>
-    <input type="button" value="增加" onclick="onAdd()" />
-    <table>
+    
+    <input class="btn2" type="button" value="增加" onclick="onAddRow()" />
+    <table id="dtl" class="dataGrid">
         <tr>
             <td>费用类型</td>
             <td>费用</td>
@@ -89,7 +142,7 @@
                 <td>@Html.TextBox("Fee" + detailRowIndex, item.Fee)</td>
                 <td>@Html.TextBox("Remark" + detailRowIndex, item.Remark)</td>
                 <td>
-                    <input type="button" value="删除" onclick="onDelRow(@detailRowIndex)" />
+                    <input class="btn2" type="button" value="删除" onclick="onDelRow(@detailRowIndex)" />
                 </td>
             </tr>
 	    }
